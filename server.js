@@ -352,6 +352,7 @@ app.get('*', (req, res) => {
 initDatabase().then(() => {
     app.listen(PORT, () => {
         console.log(`🚀 IMTTI Server running on port ${PORT}`);
-        console.log(`📱 Website: https://imtti1-production.up.railway.app/`);
+        console.log(`📱 Website: https://imtti2-production.up.railway.app/`);
     });
 });
+
