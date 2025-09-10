@@ -3,7 +3,6 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
 const path = require('path');
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -39,75 +38,95 @@ async function initDatabase() {
 }
 
 async function createTables() {
-    const createTablesSQL = `
-        CREATE TABLE IF NOT EXISTS centers (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            location VARCHAR(255),
-            contact_person VARCHAR(255),
-            phone VARCHAR(20),
-            is_active BOOLEAN DEFAULT true,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
-        );
-
-        CREATE TABLE IF NOT EXISTS students (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            email VARCHAR(255),
-            phone VARCHAR(20),
-            date_of_birth DATE,
-            center_id INT,
-            photo TEXT,
-            registration_id VARCHAR(50) UNIQUE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (center_id) REFERENCES centers(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS applications (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            application_number VARCHAR(50) UNIQUE NOT NULL,
-            student_id INT,
-            center_id INT,
-            data JSON,
-            status VARCHAR(50) DEFAULT 'pending',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (student_id) REFERENCES students(id),
-            FOREIGN KEY (center_id) REFERENCES centers(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS marks (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            student_id INT,
-            subject VARCHAR(255) NOT NULL,
-            marks INT,
-            grade VARCHAR(10),
-            center_id INT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (student_id) REFERENCES students(id),
-            FOREIGN KEY (center_id) REFERENCES centers(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS admins (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-
-        INSERT IGNORE INTO admins (name, email, password)
-        VALUES ('IMTTI Administrator', 'admin@imtti.com', 'admin123');
-    `;
+    const tables = [
+        {
+            name: 'centers',
+            sql: `CREATE TABLE IF NOT EXISTS centers (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                location VARCHAR(255),
+                contact_person VARCHAR(255),
+                phone VARCHAR(20),
+                is_active BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            )`
+        },
+        {
+            name: 'students',
+            sql: `CREATE TABLE IF NOT EXISTS students (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255),
+                phone VARCHAR(20),
+                date_of_birth DATE,
+                center_id INT,
+                photo TEXT,
+                registration_id VARCHAR(50) UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (center_id) REFERENCES centers(id)
+            )`
+        },
+        {
+            name: 'applications',
+            sql: `CREATE TABLE IF NOT EXISTS applications (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                application_number VARCHAR(50) UNIQUE NOT NULL,
+                student_id INT,
+                center_id INT,
+                data JSON,
+                status VARCHAR(50) DEFAULT 'pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (student_id) REFERENCES students(id),
+                FOREIGN KEY (center_id) REFERENCES centers(id)
+            )`
+        },
+        {
+            name: 'marks',
+            sql: `CREATE TABLE IF NOT EXISTS marks (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                student_id INT,
+                subject VARCHAR(255) NOT NULL,
+                marks INT,
+                grade VARCHAR(10),
+                center_id INT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (student_id) REFERENCES students(id),
+                FOREIGN KEY (center_id) REFERENCES centers(id)
+            )`
+        },
+        {
+            name: 'admins',
+            sql: `CREATE TABLE IF NOT EXISTS admins (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )`
+        }
+    ];
 
     try {
-        await pool.execute(createTablesSQL);
-        console.log('✅ Database tables created successfully');
+        // Create tables one by one
+        for (const table of tables) {
+            await pool.execute(table.sql);
+            console.log(`✅ Table ${table.name} created successfully`);
+        }
+
+        // Insert default admin
+        await pool.execute(`
+            INSERT IGNORE INTO admins (name, email, password)
+            VALUES ('IMTTI Administrator', 'admin@imtti.com', 'admin123')
+        `);
+        console.log('✅ Default admin created successfully');
+        
+        console.log('✅ All database tables created successfully');
     } catch (error) {
         console.error('❌ Error creating tables:', error);
     }
