@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMTTI - International Montessori Teachers Training Institute</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>IMTTI</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#courses" class="nav-link">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-login" onclick="showLoginModal()">Login</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-login" onclick="showStudentLoginModal()">Student Login</button>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Welcome to <span class="highlight">IMTTI</span></h1>
+                <p class="hero-subtitle">International Montessori Teachers Training Institute</p>
+                <div class="statistics-section">
+                    <div class="stat-item">
+                        <div class="stat-number">100,000+</div>
+                        <div class="stat-label">Teachers Trained</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">638+</div>
+                        <div class="stat-label">Branches</div>
+                    </div>
+                </div>
+                <p class="hero-description">
+                    Empowering educators worldwide through comprehensive Montessori teacher training programs. 
+                    Join our community of passionate teachers dedicated to nurturing young minds.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="openLoginModal()">Admin Login</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='center-login.html'">Center Login</button>
+                    <button class="btn btn-outline" onclick="openStudentLoginModal()">Student Login</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-graphic">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>About IMTTI</h2>
+                <p>Excellence in Montessori Teacher Education</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>
+                        IMTTI is dedicated to providing world-class Montessori teacher training programs 
+                        that prepare educators to create nurturing, child-centered learning environments. 
+                        We believe in the transformative power of Montessori education.
+                    </p>
+                    <div class="stats">
+                        <div class="stat">
+                            <h4>100,000+</h4>
+                            <p>Teachers Trained</p>
+                        </div>
+                        <div class="stat">
+                            <h4>638+</h4>
+                            <p>Branches</p>
+                        </div>
+                        <div class="stat">
+                            <h4>15+</h4>
+                            <p>Years Experience</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="about-graphic">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="courses">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Courses</h2>
+                <p>Comprehensive Montessori teacher training programs</p>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Montessori Diploma Program</h3>
+                    <p>Complete Montessori teacher certification program covering all age groups from 0-12 years.</p>
+                </div>
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Professional Certification</h3>
+                    <p>Internationally recognized Montessori teacher certification with practical training.</p>
+                </div>
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Comprehensive Curriculum</h3>
+                    <p>Complete curriculum covering Montessori philosophy, materials, and teaching methods.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get In Touch</h2>
+                <p>Ready to start your next project? Let's talk!</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>wonderkidz.kgf@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 9611630879</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p>Kolar Gold Fields<br>Karnataka, India</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>IMTTI</h3>
+                    <p>Innovation, Modern Technology, and Transformative Ideas</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-envelope"></i> wonderkidz.kgf@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9611630879</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Kolar Gold Fields, Karnataka, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 IMTTI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Login to IMTTI</h2>
+            <div class="login-tabs">
+                <button class="tab-btn active" onclick="switchTab('admin')">Admin Login</button>
+                <button class="tab-btn" onclick="switchTab('center')">Center Login</button>
+            </div>
+            
+            <!-- Admin Login Form -->
+            <div id="adminLogin" class="login-form active">
+                <form onsubmit="adminLogin(event)">
+                    <div class="form-group">
+                        <label>Admin Email</label>
+                        <input type="email" id="adminEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="adminPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login as Admin</button>
+                </form>
+            </div>
+            
+            <!-- Center Login Form -->
+            <div id="centerLogin" class="login-form">
+                <div style="text-align: center; padding: 2rem;">
+                    <h3>Center Login</h3>
+                    <p style="margin-bottom: 1.5rem; color: #b0b0b0;">Access your center dashboard to manage students and applications</p>
+                    <button class="btn btn-primary" onclick="window.location.href='center-login.html'">
+                        <i class="fas fa-school"></i> Go to Center Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Login Modal -->
+    <div id="studentLoginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeStudentLoginModal()">&times;</span>
+            <h2>Student Login - IMTTI</h2>
+            <form onsubmit="studentLogin(event)">
+                <div class="form-group">
+                    <label>Registration Number</label>
+                    <input type="text" id="studentLoginId" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth (DD-MM-YYYY)</label>
+                    <input type="text" id="studentLoginPassword" placeholder="DD-MM-YYYY" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login as Student</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="api-client.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

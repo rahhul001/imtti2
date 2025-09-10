@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Center Login - IMTTI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e5e5e5;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e5e5e5;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #888;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ffd700;
+            color: #1a1a1a;
+        }
+
+        .error-message {
+            background: #ef4444;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message {
+            background: #10b981;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1><i class="fas fa-school"></i> Center Login</h1>
+            <p>International Montessori Teachers Training Institute</p>
+            <p style="font-size: 0.9rem; color: #b0b0b0; margin-top: 10px;">
+                Contact: wonderkidz.kgf@gmail.com | +91 9611630879
+            </p>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <form id="centerLoginForm">
+            <div class="form-group">
+                <label for="centerEmail">Email Address</label>
+                <input type="email" id="centerEmail" name="email" placeholder="Enter your center email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="centerPassword">Password</label>
+                <input type="password" id="centerPassword" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login to Dashboard
+            </button>
+        </form>
+
+        <button onclick="goBack()" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </button>
+    </div>
+
+    <script>
+        // Load data from localStorage
+        function loadData() {
+            const centersData = localStorage.getItem('imtti_centers');
+            if (centersData) {
+                return JSON.parse(centersData);
+            }
+            return [];
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Center login function
+        function centerLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('centerEmail').value;
+            const password = document.getElementById('centerPassword').value;
+            
+            console.log('Center login attempt:', email);
+            
+            const centers = loadData();
+            console.log('Available centers:', centers);
+            
+            const center = centers.find(c => c.email === email && c.password === password);
+            
+            if (center) {
+                // Check if center is suspended
+                if (center.status === 'suspended') {
+                    showError('This center account has been suspended. Please contact the administrator.');
+                    return;
+                }
+                
+                // Store center email for dashboard access
+                localStorage.setItem('currentCenterEmail', email);
+                localStorage.setItem('currentCenterId', center.id);
+                
+                showSuccess('Login successful! Redirecting to dashboard...');
+                
+                // Redirect to center dashboard
+                setTimeout(() => {
+                    window.location.href = 'center-dashboard-new.html';
+                }, 1000);
+            } else {
+                showError('Invalid email or password. Please check your credentials.');
+            }
+        }
+
+        // Go back to home page
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Add form event listener
+        document.getElementById('centerLoginForm').addEventListener('submit', centerLogin);
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Center login page loaded');
+        });
+    </script>
+</body>
+</html>

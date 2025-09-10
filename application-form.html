@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Application Form - IMTTI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .application-container {
+            min-height: 100vh;
+            background: #1a1a1a;
+            padding: 2rem;
+        }
+        .application-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: #2d2d2d;
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+        }
+        .application-header h1 {
+            color: #ffd700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .application-header p {
+            color: #e5e5e5;
+            font-size: 1.2rem;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #1a1a1a;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        .form-section h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 0.5rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: #2d2d2d;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        .form-group input[type="file"] {
+            padding: 8px;
+        }
+        .btn-primary {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background: #ffed4e;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .btn-secondary:hover {
+            background: #ffd700;
+            color: #1a1a1a;
+        }
+        .photo-upload {
+            text-align: center;
+            padding: 2rem;
+            border: 2px dashed #ffd700;
+            border-radius: 10px;
+            background: #1a1a1a;
+        }
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 1rem auto;
+            display: block;
+            border: 3px solid #ffd700;
+        }
+        .education-entry {
+            background: #2d2d2d;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        .education-entry h4 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+        .remove-education {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+        .add-education {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .application-number {
+            background: #ffd700;
+            color: #1a1a1a;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="application-container">
+        <div class="application-header">
+            <h1>IMTTI - Student Application Form</h1>
+            <p>International Montessori Teachers Training Institute</p>
+            <p style="font-size: 0.9rem; color: #b0b0b0; margin: 10px 0;">
+                Contact: wonderkidz.kgf@gmail.com | +91 9611630879
+            </p>
+            <div class="application-number" id="applicationNumber">
+                Application Number: <span id="appNumber">Loading...</span>
+            </div>
+        </div>
+
+        <form id="applicationForm" onsubmit="submitApplication(event)">
+            <div class="form-container">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Personal Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email ID *</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth *</label>
+                            <input type="date" id="dateOfBirth" required onchange="calculateAge()">
+                        </div>
+                        <div class="form-group">
+                            <label>Age (Auto-calculated)</label>
+                            <input type="text" id="age" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Sex *</label>
+                            <select id="sex" required>
+                                <option value="">Select Sex</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Mother Tongue *</label>
+                            <input type="text" id="motherTongue" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Marital Status *</label>
+                            <select id="maritalStatus" required>
+                                <option value="">Select Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Community *</label>
+                            <input type="text" id="community" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Name of Husband/Father *</label>
+                            <input type="text" id="fatherHusbandName" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Address Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Local Address *</label>
+                            <textarea id="localAddress" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Permanent Address *</label>
+                            <textarea id="permanentAddress" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Place of Birth *</label>
+                            <input type="text" id="placeOfBirth" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo Upload -->
+                <div class="form-section">
+                    <h3><i class="fas fa-camera"></i> Photo Upload</h3>
+                    <div class="photo-upload">
+                        <input type="file" id="photo" accept="image/*" onchange="previewPhoto(event)" style="display: none;">
+                        <label for="photo" style="cursor: pointer;">
+                            <i class="fas fa-upload" style="font-size: 2rem; color: #ffd700;"></i>
+                            <p>Click to upload photo</p>
+                        </label>
+                        <img id="photoPreview" class="photo-preview" style="display: none;">
+                    </div>
+                </div>
+
+                <!-- Education Qualification -->
+                <div class="form-section">
+                    <h3><i class="fas fa-graduation-cap"></i> Education Qualification</h3>
+                    <div id="educationEntries">
+                        <div class="education-entry">
+                            <h4>Education Entry 1</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Name of School/College *</label>
+                                    <input type="text" name="schoolName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Subject Studied *</label>
+                                    <input type="text" name="subject" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Class Obtained *</label>
+                                    <input type="text" name="classObtained" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Years of Study *</label>
+                                    <input type="text" name="yearsOfStudy" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Year of Passing *</label>
+                                    <input type="number" name="yearOfPassing" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Name of Examination *</label>
+                                    <input type="text" name="examinationName" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-education" onclick="addEducationEntry()">
+                        <i class="fas fa-plus"></i> Add Education Entry
+                    </button>
+                </div>
+
+                <!-- Course Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-book"></i> Course Information</h3>
+                    <div class="form-group">
+                        <label>Course Applied For *</label>
+                        <select id="course" required>
+                            <option value="">Select Course</option>
+                            <option value="Montessori Diploma Program">Montessori Diploma Program</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-section">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> Submit Application
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="saveDraft()">
+                        <i class="fas fa-save"></i> Save as Draft
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let educationEntryCount = 1;
+
+        // Generate application number
+        function generateApplicationNumber() {
+            const year = new Date().getFullYear().toString().slice(-2);
+            const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+            return `APP${year}${randomPart}`;
+        }
+
+        // Calculate age from date of birth
+        function calculateAge() {
+            const dob = document.getElementById('dateOfBirth').value;
+            if (dob) {
+                const today = new Date();
+                const birthDate = new Date(dob);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                document.getElementById('age').value = age;
+            }
+        }
+
+        // Preview photo
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Add education entry
+        function addEducationEntry() {
+            educationEntryCount++;
+            const educationEntries = document.getElementById('educationEntries');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'education-entry';
+            newEntry.innerHTML = `
+                <h4>Education Entry ${educationEntryCount} 
+                    <button type="button" class="remove-education" onclick="removeEducationEntry(this)">Remove</button>
+                </h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Name of School/College *</label>
+                        <input type="text" name="schoolName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject Studied *</label>
+                        <input type="text" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Class Obtained *</label>
+                        <input type="text" name="classObtained" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Years of Study *</label>
+                        <input type="text" name="yearsOfStudy" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Year of Passing *</label>
+                        <input type="number" name="yearOfPassing" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Name of Examination *</label>
+                        <input type="text" name="examinationName" required>
+                    </div>
+                </div>
+            `;
+            educationEntries.appendChild(newEntry);
+        }
+
+        // Remove education entry
+        function removeEducationEntry(button) {
+            if (educationEntryCount > 1) {
+                button.parentElement.parentElement.remove();
+                educationEntryCount--;
+            }
+        }
+
+        // Submit application
+        function submitApplication(event) {
+            event.preventDefault();
+            
+            // Convert photo to base64
+            const photoFile = document.getElementById('photo').files[0];
+            let photoBase64 = '';
+            
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoBase64 = e.target.result;
+                    saveApplicationData(photoBase64);
+                };
+                reader.readAsDataURL(photoFile);
+            } else {
+                saveApplicationData(photoBase64);
+            }
+        }
+        
+        function saveApplicationData(photoBase64) {
+            // Get center information from URL or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const centerEmail = urlParams.get('centerEmail') || localStorage.getItem('currentCenterEmail');
+            const centerId = urlParams.get('centerId') || localStorage.getItem('currentCenterId');
+            
+            // Collect form data
+            const formData = {
+                id: Date.now().toString(),
+                applicationNumber: document.getElementById('appNumber').textContent,
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phoneNumber: document.getElementById('phone').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                age: document.getElementById('age').value,
+                sex: document.getElementById('sex').value,
+                motherTongue: document.getElementById('motherTongue').value,
+                maritalStatus: document.getElementById('maritalStatus').value,
+                community: document.getElementById('community').value,
+                fatherHusbandName: document.getElementById('fatherHusbandName').value,
+                localAddress: document.getElementById('localAddress').value,
+                permanentAddress: document.getElementById('permanentAddress').value,
+                placeOfBirth: document.getElementById('placeOfBirth').value,
+                course: document.getElementById('course').value,
+                photo: photoBase64,
+                education: [],
+                status: 'pending',
+                submittedDate: new Date().toISOString(),
+                centerId: centerId,
+                centerEmail: centerEmail
+            };
+
+            // Collect education entries
+            const educationEntries = document.querySelectorAll('.education-entry');
+            educationEntries.forEach(entry => {
+                const education = {
+                    schoolName: entry.querySelector('input[name="schoolName"]').value,
+                    subject: entry.querySelector('input[name="subject"]').value,
+                    classObtained: entry.querySelector('input[name="classObtained"]').value,
+                    yearsOfStudy: entry.querySelector('input[name="yearsOfStudy"]').value,
+                    yearOfPassing: entry.querySelector('input[name="yearOfPassing"]').value,
+                    examinationName: entry.querySelector('input[name="examinationName"]').value
+                };
+                formData.education.push(education);
+            });
+
+            // Save to localStorage
+            let applications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            applications.push(formData);
+            localStorage.setItem('imtti_applications', JSON.stringify(applications));
+
+            alert('Application submitted successfully! Your application number is: ' + formData.applicationNumber);
+            
+            // Reset form
+            document.getElementById('applicationForm').reset();
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('appNumber').textContent = generateApplicationNumber();
+        }
+
+        // Save as draft
+        function saveDraft() {
+            // Similar to submit but with status 'draft'
+            alert('Draft saved successfully!');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('appNumber').textContent = generateApplicationNumber();
+        });
+    </script>
+</body>
+</html>

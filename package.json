@@ -1,0 +1,18 @@
+{
+  "name": "imtti-website",
+  "version": "1.0.0",
+  "description": "International Montessori Teachers Training Institute Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.18.2",
+    "mysql2": "3.6.0",
+    "cors": "2.8.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

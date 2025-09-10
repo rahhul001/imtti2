@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Center Dashboard - IMTTI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #e5e5e5;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ffd700;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .center-info {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #333;
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: #b0b0b0;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #ffd700;
+            border-bottom-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .tab-btn:hover {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #444;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        .form-section {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #444;
+        }
+
+        .form-section h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e5e5e5;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .list-section {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #444;
+        }
+
+        .list-section h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .list-item {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #444;
+        }
+
+        .list-item h4 {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .list-item p {
+            color: #b0b0b0;
+            margin-bottom: 0.25rem;
+        }
+
+        .photo-preview {
+            margin-top: 10px;
+        }
+
+        .photo-preview img {
+            width: 100px;
+            height: 120px;
+            object-fit: cover;
+            border: 2px solid #ffd700;
+            border-radius: 5px;
+        }
+
+        .search-box {
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: white;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-approved {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-rejected {
+            background: #ef4444;
+            color: white;
+        }
+
+        .status-returned {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-print {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+            <div class="dashboard-title">
+                <i class="fas fa-school"></i> Center Dashboard - IMTTI
+                <div style="font-size: 0.8rem; color: #b0b0b0; margin-top: 5px;">
+                    Contact: wonderkidz.kgf@gmail.com | +91 9611630879
+                </div>
+            </div>
+                <div class="center-info" id="centerInfo">
+                    <!-- Center info will be displayed here -->
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+                <button class="tab-btn" onclick="switchTab('students')">Manage Students</button>
+                <button class="tab-btn" onclick="switchTab('applications')">Student Applications</button>
+                <button class="tab-btn" onclick="switchTab('marks')">Marks & Subjects</button>
+                <button class="tab-btn" onclick="switchTab('reports')">Reports</button>
+            </div>
+            
+            <!-- Overview Tab -->
+            <div id="overviewTab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalStudents">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalApplications">0</h3>
+                        <p>Applications Received</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="pendingApplications">0</h3>
+                        <p>Pending Applications</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="approvedApplications">0</h3>
+                        <p>Approved Applications</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Students Tab -->
+            <div id="studentsTab" class="tab-content">
+                <div class="form-section">
+                    <h3>Register New Student</h3>
+                    <form id="studentForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="studentName">Full Name *</label>
+                                <input type="text" id="studentName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentEmail">Email Address *</label>
+                                <input type="email" id="studentEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentPhone">Phone Number *</label>
+                                <input type="tel" id="studentPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentDOB">Date of Birth *</label>
+                                <input type="date" id="studentDOB" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentCourse">Course *</label>
+                                <select id="studentCourse" required>
+                                    <option value="">Select Course</option>
+                                    <option value="Montessori Diploma Program">Montessori Diploma Program</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentAddress">Address *</label>
+                                <textarea id="studentAddress" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentPhoto">Passport Size Photo</label>
+                                <input type="file" id="studentPhoto" accept="image/*" onchange="previewPhoto(event)">
+                                <div id="photoPreview" class="photo-preview" style="display: none;">
+                                    <img id="previewImg">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-user-plus"></i> Register Student
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Registered Students</h3>
+                    <input type="text" id="studentSearch" class="search-box" placeholder="Search students..." onkeyup="searchStudents()">
+                    <div id="studentsList">
+                        <!-- Students will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Applications Tab -->
+            <div id="applicationsTab" class="tab-content">
+                <div class="list-section">
+                    <h3>Student Applications</h3>
+                    <button class="btn-primary" onclick="openApplicationForm()" style="margin-bottom: 1rem;">
+                        <i class="fas fa-plus"></i> New Application
+                    </button>
+                    <div id="applicationsList">
+                        <!-- Applications will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Marks Tab -->
+            <div id="marksTab" class="tab-content">
+                <div class="form-section">
+                    <h3>Add Student Marks</h3>
+                    <form id="marksForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="marksStudent">Select Student *</label>
+                                <select id="marksStudent" required>
+                                    <option value="">Select Student</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="marksSubject">Subject *</label>
+                                <input type="text" id="marksSubject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="marksScore">Score *</label>
+                                <input type="number" id="marksScore" min="0" max="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="marksGrade">Grade</label>
+                                <input type="text" id="marksGrade" readonly>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-plus"></i> Add Marks
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Student Marks</h3>
+                    <div id="marksList">
+                        <!-- Marks will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Tab -->
+            <div id="reportsTab" class="tab-content">
+                <div class="form-section">
+                    <h3>Generate Reports</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="generateReport('students')">
+                            <i class="fas fa-chart-bar"></i> Students Report
+                        </button>
+                        <button class="btn-primary" onclick="generateReport('courses')">
+                            <i class="fas fa-graduation-cap"></i> Courses Report
+                        </button>
+                        <button class="btn-primary" onclick="generateReport('monthly')">
+                            <i class="fas fa-calendar"></i> Monthly Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCenter = null;
+        let centers = [];
+        let students = [];
+        let applications = [];
+        let marks = [];
+
+        // Load data from localStorage
+        function loadData() {
+            const centersData = localStorage.getItem('imtti_centers');
+            const studentsData = localStorage.getItem('imtti_students');
+            const applicationsData = localStorage.getItem('imtti_applications');
+            const marksData = localStorage.getItem('imtti_marks');
+
+            if (centersData) {
+                centers = JSON.parse(centersData);
+            }
+            if (studentsData) {
+                students = JSON.parse(studentsData);
+            }
+            if (applicationsData) {
+                applications = JSON.parse(applicationsData);
+            }
+            if (marksData) {
+                marks = JSON.parse(marksData);
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('imtti_centers', JSON.stringify(centers));
+            localStorage.setItem('imtti_students', JSON.stringify(students));
+            localStorage.setItem('imtti_applications', JSON.stringify(applications));
+            localStorage.setItem('imtti_marks', JSON.stringify(marks));
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Load data for the tab
+            if (tabName === 'students') {
+                loadStudents();
+            } else if (tabName === 'applications') {
+                loadData(); // Reload data to get latest applications
+                loadApplications();
+            } else if (tabName === 'marks') {
+                loadMarks();
+                loadMarksStudentDropdown();
+            } else if (tabName === 'overview') {
+                loadOverview();
+            }
+        }
+
+        // Load overview data
+        function loadOverview() {
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const centerApplications = applications.filter(app => 
+                centerStudents.some(s => s.email === app.email) || 
+                (app.centerId && app.centerId === currentCenter.id)
+            );
+
+            document.getElementById('totalStudents').textContent = centerStudents.length;
+            document.getElementById('totalApplications').textContent = centerApplications.length;
+            document.getElementById('pendingApplications').textContent = 
+                centerApplications.filter(app => app.status === 'pending').length;
+            document.getElementById('approvedApplications').textContent = 
+                centerApplications.filter(app => app.status === 'approved').length;
+        }
+
+        // Load students
+        function loadStudents() {
+            const studentsList = document.getElementById('studentsList');
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            
+            if (centerStudents.length === 0) {
+                studentsList.innerHTML = '<p style="color: #b0b0b0; text-align: center; padding: 2rem;">No students registered yet.</p>';
+                return;
+            }
+            
+            studentsList.innerHTML = centerStudents.map(student => `
+                <div class="list-item">
+                    <h4>${student.name}</h4>
+                    <p><strong>Email:</strong> ${student.email}</p>
+                    <p><strong>Phone:</strong> ${student.phone}</p>
+                    <p><strong>Course:</strong> ${student.course}</p>
+                    <p><strong>Registration Number:</strong> ${student.registrationNumber}</p>
+                    <p><strong>Registered:</strong> ${new Date(student.registeredDate).toLocaleDateString()}</p>
+                </div>
+            `).join('');
+        }
+
+        // Load applications
+        function loadApplications() {
+            const applicationsList = document.getElementById('applicationsList');
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const centerApplications = applications.filter(app => 
+                centerStudents.some(s => s.email === app.email) || 
+                (app.centerId && app.centerId === currentCenter.id)
+            );
+            
+            console.log('Loading applications for center:', currentCenter.id);
+            console.log('Center students:', centerStudents);
+            console.log('All applications:', applications);
+            console.log('Center applications:', centerApplications);
+            
+            if (centerApplications.length === 0) {
+                applicationsList.innerHTML = '<p style="color: #b0b0b0; text-align: center; padding: 2rem;">No applications received yet.</p>';
+                return;
+            }
+            
+            applicationsList.innerHTML = centerApplications.map(app => `
+                <div class="list-item">
+                    <h4>${app.fullName}</h4>
+                    <p><strong>Email:</strong> ${app.email}</p>
+                    <p><strong>Phone:</strong> ${app.phoneNumber}</p>
+                    <p><strong>Application Number:</strong> ${app.applicationNumber}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${app.status}">${app.status.toUpperCase()}</span></p>
+                    <p><strong>Submitted:</strong> ${new Date(app.submittedDate).toLocaleDateString()}</p>
+                    <div class="action-buttons">
+                        <button class="btn-small btn-view" onclick="viewApplication('${app.id}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        ${app.status === 'returned' ? `
+                            <button class="btn-small btn-edit" onclick="editApplication('${app.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        ` : ''}
+                        <button class="btn-small btn-print" onclick="printApplication('${app.id}')">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load marks
+        function loadMarks() {
+            const marksList = document.getElementById('marksList');
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const centerMarks = marks.filter(m => 
+                centerStudents.some(s => s.id === m.studentId)
+            );
+            
+            if (centerMarks.length === 0) {
+                marksList.innerHTML = '<p style="color: #b0b0b0; text-align: center; padding: 2rem;">No marks recorded yet.</p>';
+                return;
+            }
+            
+            marksList.innerHTML = centerMarks.map(mark => {
+                const student = students.find(s => s.id === mark.studentId);
+                return `
+                    <div class="list-item">
+                        <h4>${student ? student.name : 'Unknown Student'}</h4>
+                        <p><strong>Subject:</strong> ${mark.subject}</p>
+                        <p><strong>Score:</strong> ${mark.score}/100</p>
+                        <p><strong>Grade:</strong> ${mark.grade}</p>
+                        <p><strong>Date:</strong> ${new Date(mark.date).toLocaleDateString()}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load marks student dropdown
+        function loadMarksStudentDropdown() {
+            const marksStudent = document.getElementById('marksStudent');
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            
+            marksStudent.innerHTML = '<option value="">Select Student</option>' +
+                centerStudents.map(student => 
+                    `<option value="${student.id}">${student.name} (${student.registrationNumber})</option>`
+                ).join('');
+        }
+
+        // Preview photo
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photoPreview');
+                    const img = document.getElementById('previewImg');
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Register student
+        function registerStudent(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const phone = document.getElementById('studentPhone').value;
+            const course = document.getElementById('studentCourse').value;
+            const address = document.getElementById('studentAddress').value;
+            const dateOfBirth = document.getElementById('studentDOB').value;
+            const photoFile = document.getElementById('studentPhoto').files[0];
+            
+            const registrationNumber = generateRegistrationNumber();
+            
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoBase64 = e.target.result;
+                    saveStudentWithPhoto(name, email, phone, course, address, dateOfBirth, photoBase64, registrationNumber);
+                };
+                reader.readAsDataURL(photoFile);
+            } else {
+                saveStudentWithPhoto(name, email, phone, course, address, dateOfBirth, '', registrationNumber);
+            }
+        }
+
+        // Save student with photo
+        function saveStudentWithPhoto(name, email, phone, course, address, dateOfBirth, photoBase64, registrationNumber) {
+            const student = {
+                id: Date.now().toString(),
+                name: name,
+                email: email,
+                phone: phone,
+                course: course,
+                address: address,
+                dateOfBirth: dateOfBirth,
+                photo: photoBase64,
+                registrationNumber: registrationNumber,
+                centerId: currentCenter.id,
+                registeredDate: new Date().toISOString(),
+                status: 'registered',
+                studentId: registrationNumber,
+                password: dateOfBirth ? dateOfBirth.replace(/-/g, '') : ''
+            };
+            
+            students.push(student);
+            saveData();
+            loadStudents();
+            loadOverview();
+            
+            alert(`Student registered successfully! Registration Number: ${registrationNumber}`);
+            
+            // Clear form
+            document.getElementById('studentForm').reset();
+            document.getElementById('photoPreview').style.display = 'none';
+        }
+
+        // Generate registration number
+        function generateRegistrationNumber() {
+            const year = new Date().getFullYear().toString().slice(-2);
+            const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+            return `IMTTI${year}${randomPart}`;
+        }
+
+        // Add marks
+        function addMarks(event) {
+            event.preventDefault();
+            
+            const studentId = document.getElementById('marksStudent').value;
+            const subject = document.getElementById('marksSubject').value;
+            const score = parseInt(document.getElementById('marksScore').value);
+            
+            if (!studentId || !subject || isNaN(score)) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const grade = calculateGrade(score);
+            
+            const mark = {
+                id: Date.now().toString(),
+                studentId: studentId,
+                subject: subject,
+                score: score,
+                grade: grade,
+                date: new Date().toISOString()
+            };
+            
+            marks.push(mark);
+            saveData();
+            loadMarks();
+            
+            alert('Marks added successfully!');
+            document.getElementById('marksForm').reset();
+        }
+
+        // Calculate grade
+        function calculateGrade(score) {
+            if (score >= 90) return 'A+';
+            if (score >= 80) return 'A';
+            if (score >= 70) return 'B+';
+            if (score >= 60) return 'B';
+            if (score >= 50) return 'C+';
+            if (score >= 40) return 'C';
+            return 'F';
+        }
+
+        // Auto-calculate grade when score changes
+        document.getElementById('marksScore').addEventListener('input', function() {
+            const score = parseInt(this.value);
+            if (!isNaN(score)) {
+                document.getElementById('marksGrade').value = calculateGrade(score);
+            }
+        });
+
+        // Open application form
+        function openApplicationForm() {
+            const centerEmail = currentCenter.email;
+            const centerId = currentCenter.id;
+            const formUrl = `application-form.html?centerEmail=${encodeURIComponent(centerEmail)}&centerId=${encodeURIComponent(centerId)}`;
+            window.open(formUrl, '_blank', 'width=1000,height=800');
+        }
+
+        // View application
+        function viewApplication(applicationId) {
+            const app = applications.find(a => a.id === applicationId);
+            if (app) {
+                alert(`Application Details:\n\nName: ${app.fullName}\nEmail: ${app.email}\nPhone: ${app.phoneNumber}\nStatus: ${app.status}\nSubmitted: ${new Date(app.submittedDate).toLocaleDateString()}`);
+            }
+        }
+
+        // Edit application
+        function editApplication(applicationId) {
+            const app = applications.find(a => a.id === applicationId);
+            if (app) {
+                // Open application form with pre-filled data
+                const formUrl = `application-form.html?edit=${applicationId}`;
+                window.open(formUrl, '_blank', 'width=1000,height=800');
+            }
+        }
+
+        // Print application
+        function printApplication(applicationId) {
+            const app = applications.find(a => a.id === applicationId);
+            if (app) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Application - ${app.fullName}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .header { text-align: center; margin-bottom: 30px; }
+                            .section { margin-bottom: 20px; }
+                            .field { margin-bottom: 10px; }
+                            .field label { font-weight: bold; }
+                            .photo { float: right; margin-left: 20px; }
+                            .photo img { width: 100px; height: 120px; object-fit: cover; border: 2px solid #000; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>IMTTI - International Montessori Teachers Training Institute</h1>
+                            <h2>Student Application Form</h2>
+                        </div>
+                        
+                        <div class="photo">
+                            ${app.photo ? `<img src="${app.photo}" alt="Student Photo">` : ''}
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Application Details</h3>
+                            <div class="field"><label>Application Number:</label> ${app.applicationNumber}</div>
+                            <div class="field"><label>Submitted Date:</label> ${new Date(app.submittedDate).toLocaleDateString()}</div>
+                            <div class="field"><label>Status:</label> ${app.status}</div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Personal Information</h3>
+                            <div class="field"><label>Full Name:</label> ${app.fullName}</div>
+                            <div class="field"><label>Email:</label> ${app.email}</div>
+                            <div class="field"><label>Phone:</label> ${app.phoneNumber}</div>
+                            <div class="field"><label>Date of Birth:</label> ${app.dateOfBirth}</div>
+                            <div class="field"><label>Place of Birth:</label> ${app.placeOfBirth}</div>
+                            <div class="field"><label>Sex:</label> ${app.sex}</div>
+                            <div class="field"><label>Mother Tongue:</label> ${app.motherTongue}</div>
+                            <div class="field"><label>Marital Status:</label> ${app.maritalStatus}</div>
+                            <div class="field"><label>Community:</label> ${app.community}</div>
+                            <div class="field"><label>Father/Husband Name:</label> ${app.fatherHusbandName}</div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Address Information</h3>
+                            <div class="field"><label>Local Address:</label> ${app.localAddress}</div>
+                            <div class="field"><label>Permanent Address:</label> ${app.permanentAddress}</div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Education Qualification</h3>
+                            <div class="field"><label>School Name:</label> ${app.schoolName}</div>
+                            <div class="field"><label>Subject Studied:</label> ${app.subjectStudied}</div>
+                            <div class="field"><label>Class Obtained:</label> ${app.classObtained}</div>
+                            <div class="field"><label>Years of Study:</label> ${app.yearsOfStudy}</div>
+                            <div class="field"><label>Year of Passing:</label> ${app.yearOfPassing}</div>
+                            <div class="field"><label>Examination Name:</label> ${app.examinationName}</div>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+
+        // Generate report
+        function generateReport(type) {
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            let reportData = '';
+            let filename = '';
+            
+            switch(type) {
+                case 'students':
+                    reportData = 'Name,Registration Number,Email,Phone,Course,Status,Registered Date\n' +
+                        centerStudents.map(s => 
+                            `${s.name},${s.registrationNumber},${s.email},${s.phone},${s.course},${s.status},${new Date(s.registeredDate).toLocaleDateString()}`
+                        ).join('\n');
+                    filename = `${currentCenter.name}-students-report.csv`;
+                    break;
+                case 'courses':
+                    const courseStats = {};
+                    centerStudents.forEach(s => {
+                        courseStats[s.course] = (courseStats[s.course] || 0) + 1;
+                    });
+                    reportData = 'Course,Count\n' +
+                        Object.entries(courseStats).map(([course, count]) => 
+                            `${course},${count}`
+                        ).join('\n');
+                    filename = `${currentCenter.name}-courses-report.csv`;
+                    break;
+                case 'monthly':
+                    const monthlyStats = {};
+                    centerStudents.forEach(s => {
+                        const month = new Date(s.registeredDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+                        monthlyStats[month] = (monthlyStats[month] || 0) + 1;
+                    });
+                    reportData = 'Month,Count\n' +
+                        Object.entries(monthlyStats).map(([month, count]) => 
+                            `${month},${count}`
+                        ).join('\n');
+                    filename = `${currentCenter.name}-monthly-report.csv`;
+                    break;
+            }
+            
+            const blob = new Blob([reportData], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Search students
+        function searchStudents() {
+            const searchTerm = document.getElementById('studentSearch').value.toLowerCase();
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const filteredStudents = centerStudents.filter(s => 
+                s.name.toLowerCase().includes(searchTerm) ||
+                s.email.toLowerCase().includes(searchTerm) ||
+                s.registrationNumber.toLowerCase().includes(searchTerm)
+            );
+            
+            const studentsList = document.getElementById('studentsList');
+            if (filteredStudents.length === 0) {
+                studentsList.innerHTML = '<p style="color: #b0b0b0; text-align: center; padding: 2rem;">No students found matching your search.</p>';
+                return;
+            }
+            
+            studentsList.innerHTML = filteredStudents.map(student => `
+                <div class="list-item">
+                    <h4>${student.name}</h4>
+                    <p><strong>Email:</strong> ${student.email}</p>
+                    <p><strong>Phone:</strong> ${student.phone}</p>
+                    <p><strong>Course:</strong> ${student.course}</p>
+                    <p><strong>Registration Number:</strong> ${student.registrationNumber}</p>
+                    <p><strong>Registered:</strong> ${new Date(student.registeredDate).toLocaleDateString()}</p>
+                </div>
+            `).join('');
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentCenterEmail');
+                localStorage.removeItem('currentCenterId');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                loadData();
+                
+                const centerEmail = localStorage.getItem('currentCenterEmail');
+                const centerId = localStorage.getItem('currentCenterId');
+                
+                if (centerEmail && centerId) {
+                    currentCenter = centers.find(c => c.email === centerEmail && c.id === centerId);
+                    
+                    if (currentCenter) {
+                        if (currentCenter.status === 'suspended') {
+                            alert('This center account has been suspended. Please contact the administrator.');
+                            window.location.href = 'index.html';
+                            return;
+                        }
+                        
+                        document.getElementById('centerInfo').innerHTML = `
+                            <strong>${currentCenter.name}</strong> | ${currentCenter.location} | ${currentCenter.email}
+                        `;
+                        
+                        loadOverview();
+                    } else {
+                        alert('Center not found. Redirecting to login.');
+                        window.location.href = 'center-login.html';
+                    }
+                } else {
+                    alert('No center information found. Redirecting to login.');
+                    window.location.href = 'center-login.html';
+                }
+            } catch (error) {
+                console.error('Error initializing center dashboard:', error);
+                alert('Error loading dashboard. Please try again.');
+                window.location.href = 'center-login.html';
+            }
+        });
+
+        // Add form event listeners
+        document.getElementById('studentForm').addEventListener('submit', registerStudent);
+        document.getElementById('marksForm').addEventListener('submit', addMarks);
+    </script>
+</body>
+</html>

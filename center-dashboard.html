@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Center Dashboard - IMTTI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard-container {
+            min-height: 100vh;
+            background: #1a1a1a;
+        }
+        .dashboard-header {
+            background: #2d2d2d;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #ffd700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dashboard-title {
+            color: #ffd700;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .center-info {
+            color: #e5e5e5;
+            font-size: 0.9rem;
+        }
+        .logout-btn {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover {
+            background: #ffed4e;
+            transform: translateY(-2px);
+        }
+        .dashboard-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .dashboard-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #444;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #e5e5e5;
+            padding: 15px 30px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .tab-btn.active {
+            color: #ffd700;
+            border-bottom-color: #ffd700;
+        }
+        .tab-btn:hover {
+            color: #ffd700;
+        }
+        .center-tab {
+            display: none;
+        }
+        .center-tab.active {
+            display: block;
+        }
+        .form-section {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid #ffd700;
+        }
+        .form-section h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        .btn-primary {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            background: #ffed4e;
+            transform: translateY(-2px);
+        }
+        .list-section {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+        .list-section h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .list-item {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border: 1px solid #444;
+            color: white;
+        }
+        .list-item h4 {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .list-item p {
+            color: #e5e5e5;
+            margin: 0.5rem 0;
+        }
+        .print-btn {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .print-btn:hover {
+            background: #ffed4e;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #2d2d2d;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #ffd700;
+        }
+        .stat-card h3 {
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card p {
+            color: #e5e5e5;
+            margin: 0;
+        }
+        .search-box {
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: white;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <div class="dashboard-title">
+                    <i class="fas fa-school"></i> Center Dashboard - IMTTI
+                </div>
+                <div class="center-info" id="centerInfo">
+                    <!-- Center info will be displayed here -->
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchCenterTab('overview')">Overview</button>
+                <button class="tab-btn" onclick="switchCenterTab('students')">Manage Students</button>
+                <button class="tab-btn" onclick="switchCenterTab('applications')">Student Applications</button>
+                <button class="tab-btn" onclick="switchCenterTab('marks')">Marks & Subjects</button>
+                <button class="tab-btn" onclick="switchCenterTab('reports')">Reports</button>
+            </div>
+            
+            <!-- Overview Tab -->
+            <div id="overviewTab" class="center-tab active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalStudents">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalApplications">0</h3>
+                        <p>Total Applications</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="recentRegistrations">0</h3>
+                        <p>Recent Registrations</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="courseDistribution">0</h3>
+                        <p>Active Courses</p>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Quick Actions</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="switchCenterTab('students')">
+                            <i class="fas fa-plus"></i> Add New Student
+                        </button>
+                        <button class="btn-primary" onclick="switchCenterTab('applications')">
+                            <i class="fas fa-list"></i> View Applications
+                        </button>
+                        <button class="btn-primary" onclick="exportCenterData()">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Students Management Tab -->
+            <div id="studentsTab" class="center-tab">
+                <div class="form-section">
+                    <h3>Register New Student</h3>
+                    <form onsubmit="registerStudent(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Student Name</label>
+                                <input type="text" id="studentName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="studentEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" id="studentPhone" required>
+                            </div>
+                        <div class="form-group">
+                            <label>Course</label>
+                            <select id="studentCourse" required>
+                                <option value="">Select Course</option>
+                                <option value="Montessori Diploma Program">Montessori Diploma Program</option>
+                            </select>
+                        </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea id="studentAddress" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="studentDOB">
+                            </div>
+                            <div class="form-group">
+                                <label>Passport Size Photo</label>
+                                <input type="file" id="studentPhoto" accept="image/*" onchange="previewPhoto(event)">
+                                <div id="photoPreview" style="margin-top: 10px; display: none;">
+                                    <img id="previewImg" style="width: 100px; height: 120px; object-fit: cover; border: 2px solid #ffd700; border-radius: 5px;">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Register Student</button>
+                    </form>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Registered Students</h3>
+                    <input type="text" class="search-box" id="studentSearch" placeholder="Search students..." onkeyup="filterStudents()">
+                    <div id="studentsList">
+                        <!-- Students will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Applications Management Tab -->
+            <div id="applicationsTab" class="center-tab">
+                <div class="form-section">
+                    <h3>New Student Application</h3>
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <button class="btn-primary" onclick="openApplicationForm()">
+                            <i class="fas fa-plus"></i> Create New Application
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Student Applications</h3>
+                    <input type="text" class="search-box" id="applicationSearch" placeholder="Search applications..." onkeyup="filterApplications()">
+                    <div id="centerApplicationsList">
+                        <!-- Applications will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Marks & Subjects Management Tab -->
+            <div id="marksTab" class="center-tab">
+                <div class="form-section">
+                    <h3>Add Student Marks</h3>
+                    <form onsubmit="addStudentMarks(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Select Student</label>
+                                <select id="marksStudent" required>
+                                    <option value="">Select Student</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <input type="text" id="marksSubject" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Marks Obtained</label>
+                                <input type="number" id="marksObtained" min="0" max="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Total Marks</label>
+                                <input type="number" id="totalMarks" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Exam Date</label>
+                                <input type="date" id="examDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Remarks</label>
+                                <textarea id="marksRemarks" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Marks</button>
+                    </form>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Student Marks</h3>
+                    <div id="studentMarksList">
+                        <!-- Marks will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Tab -->
+            <div id="reportsTab" class="center-tab">
+                <div class="form-section">
+                    <h3>Generate Reports</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="generateCenterReport('students')">
+                            <i class="fas fa-chart-bar"></i> Students Report
+                        </button>
+                        <button class="btn-primary" onclick="generateCenterReport('courses')">
+                            <i class="fas fa-graduation-cap"></i> Courses Report
+                        </button>
+                        <button class="btn-primary" onclick="generateCenterReport('monthly')">
+                            <i class="fas fa-calendar"></i> Monthly Report
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Recent Activity</h3>
+                    <div id="centerRecentActivity">
+                        <!-- Recent activity will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCenter = null;
+        
+        // Center Dashboard specific functions
+        function switchCenterTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.center-tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Show corresponding tab
+            document.getElementById(tab + 'Tab').classList.add('active');
+            
+            // Load data for the tab
+            if (tab === 'students') {
+                loadStudents();
+            } else if (tab === 'applications') {
+                loadCenterApplications();
+            } else if (tab === 'marks') {
+                loadStudentMarks();
+                loadMarksStudentDropdown();
+            } else if (tab === 'overview') {
+                loadCenterOverview();
+            } else if (tab === 'reports') {
+                loadCenterRecentActivity();
+            }
+        }
+        
+        function loadCenterOverview() {
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            
+            document.getElementById('totalStudents').textContent = centerStudents.length;
+            document.getElementById('totalApplications').textContent = centerStudents.length;
+            
+            // Count recent registrations (last 7 days)
+            const recentDate = new Date();
+            recentDate.setDate(recentDate.getDate() - 7);
+            const recentCount = centerStudents.filter(s => new Date(s.registeredDate) > recentDate).length;
+            document.getElementById('recentRegistrations').textContent = recentCount;
+            
+            // Count unique courses
+            const uniqueCourses = new Set(centerStudents.map(s => s.course)).size;
+            document.getElementById('courseDistribution').textContent = uniqueCourses;
+        }
+        
+        function loadCenterRecentActivity() {
+            const activityList = document.getElementById('centerRecentActivity');
+            activityList.innerHTML = '';
+            
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id)
+                .sort((a, b) => new Date(b.registeredDate) - new Date(a.registeredDate));
+            
+            centerStudents.slice(0, 10).forEach(student => {
+                const activityDiv = document.createElement('div');
+                activityDiv.className = 'list-item';
+                activityDiv.innerHTML = `
+                    <h4>New Student Registered</h4>
+                    <p><strong>Name:</strong> ${student.name}</p>
+                    <p><strong>Registration Number:</strong> ${student.registrationNumber}</p>
+                    <p><strong>Course:</strong> ${student.course}</p>
+                    <p><strong>Date:</strong> ${new Date(student.registeredDate).toLocaleString()}</p>
+                `;
+                activityList.appendChild(activityDiv);
+            });
+        }
+        
+        function filterStudents() {
+            const searchTerm = document.getElementById('studentSearch').value.toLowerCase();
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const filteredStudents = centerStudents.filter(s => 
+                s.name.toLowerCase().includes(searchTerm) ||
+                s.registrationNumber.toLowerCase().includes(searchTerm) ||
+                s.email.toLowerCase().includes(searchTerm) ||
+                s.course.toLowerCase().includes(searchTerm)
+            );
+            
+            displayStudents(filteredStudents);
+        }
+        
+        function filterApplications() {
+            const searchTerm = document.getElementById('applicationSearch').value.toLowerCase();
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const filteredStudents = centerStudents.filter(s => 
+                s.name.toLowerCase().includes(searchTerm) ||
+                s.registrationNumber.toLowerCase().includes(searchTerm) ||
+                s.email.toLowerCase().includes(searchTerm) ||
+                s.course.toLowerCase().includes(searchTerm)
+            );
+            
+            displayApplications(filteredStudents);
+        }
+        
+        function displayStudents(studentsToShow) {
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = '';
+            
+            if (studentsToShow.length === 0) {
+                studentsList.innerHTML = '<p style="color: #e5e5e5;">No students found.</p>';
+                return;
+            }
+            
+            studentsToShow.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'list-item';
+                studentDiv.innerHTML = `
+                    <h4>${student.name}</h4>
+                    <p><strong>Registration Number:</strong> ${student.registrationNumber}</p>
+                    <p><strong>Email:</strong> ${student.email}</p>
+                    <p><strong>Phone:</strong> ${student.phone}</p>
+                    <p><strong>Course:</strong> ${student.course}</p>
+                    <p><strong>Status:</strong> ${student.status}</p>
+                    <p><strong>Registered:</strong> ${new Date(student.registeredDate).toLocaleDateString()}</p>
+                    <button class="print-btn" onclick="printApplication('${student.id}')">Print Application</button>
+                `;
+                studentsList.appendChild(studentDiv);
+            });
+        }
+        
+        function displayApplications(studentsToShow) {
+            const applicationsList = document.getElementById('centerApplicationsList');
+            applicationsList.innerHTML = '';
+            
+            if (studentsToShow.length === 0) {
+                applicationsList.innerHTML = '<p style="color: #e5e5e5;">No applications found.</p>';
+                return;
+            }
+            
+            studentsToShow.forEach(student => {
+                const applicationDiv = document.createElement('div');
+                applicationDiv.className = 'list-item';
+                applicationDiv.innerHTML = `
+                    <h4>${student.name}</h4>
+                    <p><strong>Registration Number:</strong> ${student.registrationNumber}</p>
+                    <p><strong>Course:</strong> ${student.course}</p>
+                    <p><strong>Email:</strong> ${student.email}</p>
+                    <p><strong>Phone:</strong> ${student.phone}</p>
+                    <p><strong>Status:</strong> ${student.status}</p>
+                    <p><strong>Registered:</strong> ${new Date(student.registeredDate).toLocaleDateString()}</p>
+                    <button class="print-btn" onclick="printApplication('${student.id}')">Print Application</button>
+                `;
+                applicationsList.appendChild(applicationDiv);
+            });
+        }
+        
+        function exportCenterData() {
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const data = {
+                center: currentCenter,
+                students: centerStudents,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentCenter.name}-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function generateCenterReport(type) {
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            let reportData = '';
+            let filename = '';
+            
+            switch(type) {
+                case 'students':
+                    reportData = centerStudents.map(s => 
+                        `${s.name},${s.registrationNumber},${s.email},${s.phone},${s.course},${s.status},${new Date(s.registeredDate).toLocaleDateString()}`
+                    ).join('\n');
+                    filename = `${currentCenter.name}-students-report.csv`;
+                    break;
+                case 'courses':
+                    const courseStats = {};
+                    centerStudents.forEach(s => {
+                        courseStats[s.course] = (courseStats[s.course] || 0) + 1;
+                    });
+                    reportData = Object.entries(courseStats).map(([course, count]) => 
+                        `${course},${count}`
+                    ).join('\n');
+                    filename = `${currentCenter.name}-courses-report.csv`;
+                    break;
+                case 'monthly':
+                    const monthlyStats = {};
+                    centerStudents.forEach(s => {
+                        const month = new Date(s.registeredDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+                        monthlyStats[month] = (monthlyStats[month] || 0) + 1;
+                    });
+                    reportData = Object.entries(monthlyStats).map(([month, count]) => 
+                        `${month},${count}`
+                    ).join('\n');
+                    filename = `${currentCenter.name}-monthly-report.csv`;
+                    break;
+            }
+            
+            const blob = new Blob([reportData], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Open application form
+        function openApplicationForm() {
+            window.open('application-form.html', '_blank');
+        }
+        
+        // Load student marks
+        function loadStudentMarks() {
+            const marksList = document.getElementById('studentMarksList');
+            marksList.innerHTML = '';
+            
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            const allMarks = JSON.parse(localStorage.getItem('imtti_studentMarks') || '[]');
+            const centerMarks = allMarks.filter(m => centerStudents.some(s => s.id === m.studentId));
+            
+            if (centerMarks.length === 0) {
+                marksList.innerHTML = '<p style="color: #e5e5e5;">No marks recorded yet.</p>';
+                return;
+            }
+            
+            // Group marks by student
+            const marksByStudent = {};
+            centerMarks.forEach(mark => {
+                if (!marksByStudent[mark.studentId]) {
+                    marksByStudent[mark.studentId] = [];
+                }
+                marksByStudent[mark.studentId].push(mark);
+            });
+            
+            Object.keys(marksByStudent).forEach(studentId => {
+                const student = centerStudents.find(s => s.id === studentId);
+                const studentMarks = marksByStudent[studentId];
+                
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'list-item';
+                studentDiv.innerHTML = `
+                    <h4>${student.name} (${student.registrationNumber})</h4>
+                    <div style="margin-top: 1rem;">
+                        ${studentMarks.map(mark => `
+                            <div style="background: #2d2d2d; padding: 1rem; margin: 0.5rem 0; border-radius: 8px;">
+                                <p><strong>Subject:</strong> ${mark.subject}</p>
+                                <p><strong>Marks:</strong> ${mark.marksObtained}/${mark.totalMarks} (${Math.round((mark.marksObtained/mark.totalMarks)*100)}%)</p>
+                                <p><strong>Exam Date:</strong> ${new Date(mark.examDate).toLocaleDateString()}</p>
+                                ${mark.remarks ? `<p><strong>Remarks:</strong> ${mark.remarks}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                marksList.appendChild(studentDiv);
+            });
+        }
+        
+        // Load marks student dropdown
+        function loadMarksStudentDropdown() {
+            const dropdown = document.getElementById('marksStudent');
+            dropdown.innerHTML = '<option value="">Select Student</option>';
+            
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            centerStudents.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} (${student.registrationNumber})`;
+                dropdown.appendChild(option);
+            });
+        }
+        
+        // Add student marks
+        function addStudentMarks(event) {
+            event.preventDefault();
+            
+            const studentId = document.getElementById('marksStudent').value;
+            const subject = document.getElementById('marksSubject').value;
+            const marksObtained = parseInt(document.getElementById('marksObtained').value);
+            const totalMarks = parseInt(document.getElementById('totalMarks').value);
+            const examDate = document.getElementById('examDate').value;
+            const remarks = document.getElementById('marksRemarks').value;
+            
+            if (marksObtained > totalMarks) {
+                alert('Marks obtained cannot be greater than total marks!');
+                return;
+            }
+            
+            const mark = {
+                id: Date.now().toString(),
+                studentId: studentId,
+                subject: subject,
+                marksObtained: marksObtained,
+                totalMarks: totalMarks,
+                examDate: examDate,
+                remarks: remarks,
+                addedDate: new Date().toISOString()
+            };
+            
+            let allMarks = JSON.parse(localStorage.getItem('imtti_studentMarks') || '[]');
+            allMarks.push(mark);
+            localStorage.setItem('imtti_studentMarks', JSON.stringify(allMarks));
+            
+            alert('Marks added successfully!');
+            
+            // Reset form
+            document.getElementById('marksSubject').value = '';
+            document.getElementById('marksObtained').value = '';
+            document.getElementById('totalMarks').value = '';
+            document.getElementById('examDate').value = '';
+            document.getElementById('marksRemarks').value = '';
+            
+            // Reload marks
+            loadStudentMarks();
+        }
+        
+        function loadCenterApplications() {
+            const centerApplicationsList = document.getElementById('centerApplicationsList');
+            centerApplicationsList.innerHTML = '';
+            
+            // Load from applications data, not students
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            
+            if (allApplications.length === 0) {
+                centerApplicationsList.innerHTML = '<p style="color: #e5e5e5;">No applications found.</p>';
+                return;
+            }
+            
+            allApplications.forEach(application => {
+                const applicationDiv = document.createElement('div');
+                applicationDiv.className = 'list-item';
+                applicationDiv.innerHTML = `
+                    <h4>${application.fullName}</h4>
+                    <p><strong>Application Number:</strong> ${application.applicationNumber}</p>
+                    <p><strong>Email:</strong> ${application.email}</p>
+                    <p><strong>Phone:</strong> ${application.phone}</p>
+                    <p><strong>Course:</strong> ${application.course}</p>
+                    <p><strong>Date of Birth:</strong> ${application.dateOfBirth}</p>
+                    <p><strong>Age:</strong> ${application.age}</p>
+                    <p><strong>Status:</strong> <span style="color: ${getStatusColor(application.status)}">${application.status.toUpperCase()}</span></p>
+                    <p><strong>Submitted:</strong> ${new Date(application.submittedDate).toLocaleDateString()}</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="print-btn" onclick="viewApplicationDetails('${application.applicationNumber}')">View Details</button>
+                        <button class="print-btn" onclick="printApplicationForm('${application.applicationNumber}')">Print Application</button>
+                        ${application.status === 'returned' ? `<button class="print-btn" onclick="editApplication('${application.applicationNumber}')" style="background: #3b82f6;">Edit Application</button>` : ''}
+                    </div>
+                `;
+                centerApplicationsList.appendChild(applicationDiv);
+            });
+        }
+        
+        function getStatusColor(status) {
+            switch(status) {
+                case 'pending': return '#f59e0b';
+                case 'approved': return '#10b981';
+                case 'rejected': return '#ef4444';
+                case 'returned': return '#3b82f6';
+                default: return '#e5e5e5';
+            }
+        }
+        
+        function viewApplicationDetails(applicationNumber) {
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const application = allApplications.find(app => app.applicationNumber === applicationNumber);
+            
+            if (application) {
+                const detailsWindow = window.open('', '_blank', 'width=800,height=600');
+                detailsWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Application Details - ${application.applicationNumber}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+                            .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                            .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #ffd700; padding-bottom: 20px; }
+                            .section { margin-bottom: 20px; }
+                            .section h3 { color: #ffd700; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+                            .field { margin-bottom: 10px; }
+                            .field label { font-weight: bold; }
+                            .education-entry { background: #f9f9f9; padding: 10px; margin: 5px 0; border-radius: 5px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <h1>IMTTI - Application Details</h1>
+                                <h2>Application Number: ${application.applicationNumber}</h2>
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Personal Information</h3>
+                                <div class="field"><label>Full Name:</label> ${application.fullName}</div>
+                                <div class="field"><label>Email:</label> ${application.email}</div>
+                                <div class="field"><label>Phone:</label> ${application.phone}</div>
+                                <div class="field"><label>Date of Birth:</label> ${application.dateOfBirth}</div>
+                                <div class="field"><label>Age:</label> ${application.age}</div>
+                                <div class="field"><label>Sex:</label> ${application.sex}</div>
+                                <div class="field"><label>Mother Tongue:</label> ${application.motherTongue}</div>
+                                <div class="field"><label>Marital Status:</label> ${application.maritalStatus}</div>
+                                <div class="field"><label>Community:</label> ${application.community}</div>
+                                <div class="field"><label>Father/Husband Name:</label> ${application.fatherHusbandName}</div>
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Address Information</h3>
+                                <div class="field"><label>Local Address:</label> ${application.localAddress}</div>
+                                <div class="field"><label>Permanent Address:</label> ${application.permanentAddress}</div>
+                                <div class="field"><label>Place of Birth:</label> ${application.placeOfBirth}</div>
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Education Qualification</h3>
+                                ${application.education.map(edu => `
+                                    <div class="education-entry">
+                                        <div class="field"><label>School/College:</label> ${edu.schoolName}</div>
+                                        <div class="field"><label>Subject:</label> ${edu.subject}</div>
+                                        <div class="field"><label>Class Obtained:</label> ${edu.classObtained}</div>
+                                        <div class="field"><label>Years of Study:</label> ${edu.yearsOfStudy}</div>
+                                        <div class="field"><label>Year of Passing:</label> ${edu.yearOfPassing}</div>
+                                        <div class="field"><label>Examination:</label> ${edu.examinationName}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Course Information</h3>
+                                <div class="field"><label>Course Applied For:</label> ${application.course}</div>
+                                <div class="field"><label>Status:</label> ${application.status}</div>
+                                <div class="field"><label>Submitted Date:</label> ${new Date(application.submittedDate).toLocaleString()}</div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `);
+            }
+        }
+        
+        function printApplicationForm(applicationNumber) {
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const application = allApplications.find(app => app.applicationNumber === applicationNumber);
+            
+            if (application) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>IMTTI Application - ${application.applicationNumber}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .header { text-align: center; margin-bottom: 30px; }
+                            .header h1 { color: #ffd700; }
+                            .section { margin-bottom: 20px; }
+                            .section h3 { color: #1a1a1a; border-bottom: 2px solid #ffd700; padding-bottom: 5px; }
+                            .field { margin-bottom: 10px; }
+                            .field label { font-weight: bold; }
+                            .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>IMTTI - International Montessori Teachers Training Institute</h1>
+                            <h2>Student Application Form</h2>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Application Details</h3>
+                            <div class="field">
+                                <label>Application Number:</label> ${application.applicationNumber}
+                            </div>
+                            <div class="field">
+                                <label>Submitted Date:</label> ${new Date(application.submittedDate).toLocaleDateString()}
+                            </div>
+                            <div class="field">
+                                <label>Status:</label> ${application.status}
+                            </div>
+                        </div>
+                        
+                        <div class="section" style="display: flex; gap: 20px;">
+                            <div style="flex: 1;">
+                                <h3>Personal Information</h3>
+                                <div class="field">
+                                    <label>Full Name:</label> ${application.fullName}
+                                </div>
+                                <div class="field">
+                                    <label>Email:</label> ${application.email}
+                                </div>
+                                <div class="field">
+                                    <label>Phone:</label> ${application.phone}
+                                </div>
+                                <div class="field">
+                                    <label>Date of Birth:</label> ${application.dateOfBirth}
+                                </div>
+                                <div class="field">
+                                    <label>Age:</label> ${application.age}
+                                </div>
+                                <div class="field">
+                                    <label>Sex:</label> ${application.sex}
+                                </div>
+                                <div class="field">
+                                    <label>Mother Tongue:</label> ${application.motherTongue}
+                                </div>
+                                <div class="field">
+                                    <label>Marital Status:</label> ${application.maritalStatus}
+                                </div>
+                                <div class="field">
+                                    <label>Community:</label> ${application.community}
+                                </div>
+                                <div class="field">
+                                    <label>Father/Husband Name:</label> ${application.fatherHusbandName}
+                                </div>
+                            </div>
+                            <div style="flex: 0 0 120px; text-align: center;">
+                                <h3>Photo</h3>
+                                <div style="width: 100px; height: 120px; border: 2px solid #ffd700; border-radius: 5px; margin: 0 auto; background: #f9f9f9; display: flex; align-items: center; justify-content: center; color: #666;">
+                                    ${application.photo ? `<img src="${application.photo}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 3px;">` : 'No Photo'}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Address Information</h3>
+                            <div class="field">
+                                <label>Local Address:</label> ${application.localAddress}
+                            </div>
+                            <div class="field">
+                                <label>Permanent Address:</label> ${application.permanentAddress}
+                            </div>
+                            <div class="field">
+                                <label>Place of Birth:</label> ${application.placeOfBirth}
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Education Qualification</h3>
+                            ${application.education.map(edu => `
+                                <div style="background: #f9f9f9; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                                    <div class="field"><label>School/College:</label> ${edu.schoolName}</div>
+                                    <div class="field"><label>Subject:</label> ${edu.subject}</div>
+                                    <div class="field"><label>Class Obtained:</label> ${edu.classObtained}</div>
+                                    <div class="field"><label>Years of Study:</label> ${edu.yearsOfStudy}</div>
+                                    <div class="field"><label>Year of Passing:</label> ${edu.yearOfPassing}</div>
+                                    <div class="field"><label>Examination:</label> ${edu.examinationName}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Course Information</h3>
+                            <div class="field">
+                                <label>Course Applied For:</label> ${application.course}
+                            </div>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>This application was generated on ${new Date().toLocaleString()}</p>
+                            <p>IMTTI - International Montessori Teachers Training Institute</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+        
+        function loadStudents() {
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = '';
+            
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            
+            if (centerStudents.length === 0) {
+                studentsList.innerHTML = '<p style="color: #e5e5e5;">No students registered yet.</p>';
+                return;
+            }
+            
+            centerStudents.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'list-item';
+                studentDiv.innerHTML = `
+                    <h4>${student.name}</h4>
+                    <p><strong>Registration Number:</strong> ${student.registrationNumber}</p>
+                    <p><strong>Email:</strong> ${student.email}</p>
+                    <p><strong>Phone:</strong> ${student.phone}</p>
+                    <p><strong>Course:</strong> ${student.course}</p>
+                    <p><strong>Date of Birth:</strong> ${student.dateOfBirth}</p>
+                    <p><strong>Status:</strong> ${student.status}</p>
+                    <p><strong>Registered:</strong> ${new Date(student.registeredDate).toLocaleDateString()}</p>
+                    <button class="print-btn" onclick="printStudentInfo('${student.id}')">Print Info</button>
+                `;
+                studentsList.appendChild(studentDiv);
+            });
+        }
+        
+        function printStudentInfo(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (student) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Student Information - ${student.registrationNumber}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .header { text-align: center; margin-bottom: 30px; }
+                            .header h1 { color: #ffd700; }
+                            .section { margin-bottom: 20px; }
+                            .section h3 { color: #1a1a1a; border-bottom: 2px solid #ffd700; padding-bottom: 5px; }
+                            .field { margin-bottom: 10px; }
+                            .field label { font-weight: bold; }
+                            .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>IMTTI - Student Information</h1>
+                            <h2>Registration Number: ${student.registrationNumber}</h2>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Student Details</h3>
+                            <div class="field">
+                                <label>Name:</label> ${student.name}
+                            </div>
+                            <div class="field">
+                                <label>Email:</label> ${student.email}
+                            </div>
+                            <div class="field">
+                                <label>Phone:</label> ${student.phone}
+                            </div>
+                            <div class="field">
+                                <label>Course:</label> ${student.course}
+                            </div>
+                            <div class="field">
+                                <label>Date of Birth:</label> ${student.dateOfBirth}
+                            </div>
+                            <div class="field">
+                                <label>Address:</label> ${student.address}
+                            </div>
+                            <div class="field">
+                                <label>Status:</label> ${student.status}
+                            </div>
+                            <div class="field">
+                                <label>Registered Date:</label> ${new Date(student.registeredDate).toLocaleDateString()}
+                            </div>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>This information was generated on ${new Date().toLocaleString()}</p>
+                            <p>IMTTI - International Montessori Teachers Training Institute</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+        
+        // Photo preview function
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photoPreview');
+                    const img = document.getElementById('previewImg');
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Student Registration Function for Center Dashboard
+        function registerStudent(event) {
+            event.preventDefault();
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const phone = document.getElementById('studentPhone').value;
+            const course = document.getElementById('studentCourse').value;
+            const address = document.getElementById('studentAddress').value;
+            const dateOfBirth = document.getElementById('studentDOB').value;
+            const photoFile = document.getElementById('studentPhoto').files[0];
+            
+            // Generate registration number
+            const registrationNumber = generateRegistrationNumber();
+            
+            // Convert photo to base64 if uploaded
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoBase64 = e.target.result;
+                    saveStudentWithPhoto(name, email, phone, course, address, dateOfBirth, photoBase64, registrationNumber);
+                };
+                reader.readAsDataURL(photoFile);
+            } else {
+                saveStudentWithPhoto(name, email, phone, course, address, dateOfBirth, '', registrationNumber);
+            }
+        }
+        
+        function saveStudentWithPhoto(name, email, phone, course, address, dateOfBirth, photoBase64, registrationNumber) {
+            const student = {
+                id: Date.now().toString(),
+                name: name,
+                email: email,
+                phone: phone,
+                course: course,
+                address: address,
+                dateOfBirth: dateOfBirth,
+                photo: photoBase64,
+                registrationNumber: registrationNumber,
+                centerId: currentCenter.id,
+                registeredDate: new Date().toISOString(),
+                status: 'registered',
+                // Student login credentials
+                studentId: registrationNumber,
+                password: dateOfBirth ? dateOfBirth.replace(/-/g, '') : ''
+            };
+            
+            students.push(student);
+            saveData();
+            loadStudents();
+            alert(`Student registered successfully! Registration Number: ${registrationNumber}`);
+            
+            // Clear form
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentEmail').value = '';
+            document.getElementById('studentPhone').value = '';
+            document.getElementById('studentCourse').value = '';
+            document.getElementById('studentAddress').value = '';
+            document.getElementById('studentDOB').value = '';
+            document.getElementById('studentPhoto').value = '';
+            document.getElementById('photoPreview').style.display = 'none';
+        }
+        
+        function generateRegistrationNumber() {
+            const year = new Date().getFullYear().toString().slice(-2);
+            const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+            return `IMTTI${year}${randomPart}`;
+        }
+        
+        function loadData() {
+            // Load data from localStorage
+            const centersData = localStorage.getItem('imtti_centers');
+            const studentsData = localStorage.getItem('imtti_students');
+            
+            console.log('Raw centers data:', centersData);
+            console.log('Raw students data:', studentsData);
+            
+            if (centersData) {
+                try {
+                    centers = JSON.parse(centersData);
+                    console.log('Parsed centers:', centers);
+                } catch (e) {
+                    console.error('Error parsing centers data:', e);
+                    centers = [];
+                }
+            } else {
+                console.log('No centers data found in localStorage');
+                centers = [];
+            }
+            
+            if (studentsData) {
+                try {
+                    students = JSON.parse(studentsData);
+                    console.log('Parsed students:', students);
+                } catch (e) {
+                    console.error('Error parsing students data:', e);
+                    students = [];
+                }
+            } else {
+                console.log('No students data found in localStorage');
+                students = [];
+            }
+        }
+        
+        function saveData() {
+            localStorage.setItem('imtti_centers', JSON.stringify(centers));
+            localStorage.setItem('imtti_students', JSON.stringify(students));
+        }
+        
+        function editApplication(applicationNumber) {
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const application = allApplications.find(app => app.applicationNumber === applicationNumber);
+            
+            if (application) {
+                // Open application form with pre-filled data
+                const editWindow = window.open('', '_blank', 'width=1000,height=800');
+                editWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Edit Application - ${application.applicationNumber}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a1a; color: white; }
+                            .container { max-width: 800px; margin: 0 auto; }
+                            .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #ffd700; padding-bottom: 20px; }
+                            .form-group { margin-bottom: 1.5rem; }
+                            .form-group label { display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: 500; }
+                            .form-group input, .form-group select, .form-group textarea { 
+                                width: 100%; padding: 12px 16px; border: 2px solid #444; border-radius: 8px; 
+                                background: #2d2d2d; color: white; font-size: 1rem; 
+                            }
+                            .form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
+                                outline: none; border-color: #ffd700; 
+                            }
+                            .btn { background: #ffd700; color: #1a1a1a; border: none; padding: 12px 30px; 
+                                border-radius: 25px; font-weight: 600; cursor: pointer; margin: 5px; }
+                            .btn:hover { background: #ffed4e; }
+                            .education-entry { background: #2d2d2d; padding: 15px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; }
+                            .add-education { background: #3b82f6; color: white; }
+                            .remove-education { background: #ef4444; color: white; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <h1>Edit Application - IMTTI</h1>
+                                <h2>Application Number: ${application.applicationNumber}</h2>
+                            </div>
+                            
+                            <form id="editApplicationForm">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="fullName" value="${application.fullName}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="email" value="${application.email}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="tel" id="phone" value="${application.phone}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Date of Birth (DD-MM-YYYY)</label>
+                                    <input type="text" id="dateOfBirth" value="${application.dateOfBirth}" placeholder="DD-MM-YYYY" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Sex</label>
+                                    <select id="sex" required>
+                                        <option value="Male" ${application.sex === 'Male' ? 'selected' : ''}>Male</option>
+                                        <option value="Female" ${application.sex === 'Female' ? 'selected' : ''}>Female</option>
+                                        <option value="Other" ${application.sex === 'Other' ? 'selected' : ''}>Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Mother Tongue</label>
+                                    <input type="text" id="motherTongue" value="${application.motherTongue}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Marital Status</label>
+                                    <select id="maritalStatus" required>
+                                        <option value="Single" ${application.maritalStatus === 'Single' ? 'selected' : ''}>Single</option>
+                                        <option value="Married" ${application.maritalStatus === 'Married' ? 'selected' : ''}>Married</option>
+                                        <option value="Divorced" ${application.maritalStatus === 'Divorced' ? 'selected' : ''}>Divorced</option>
+                                        <option value="Widowed" ${application.maritalStatus === 'Widowed' ? 'selected' : ''}>Widowed</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Community</label>
+                                    <input type="text" id="community" value="${application.community}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Father/Husband Name</label>
+                                    <input type="text" id="fatherHusbandName" value="${application.fatherHusbandName}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Local Address</label>
+                                    <textarea id="localAddress" rows="3" required>${application.localAddress}</textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Permanent Address</label>
+                                    <textarea id="permanentAddress" rows="3" required>${application.permanentAddress}</textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Place of Birth</label>
+                                    <input type="text" id="placeOfBirth" value="${application.placeOfBirth}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Course Applied For</label>
+                                    <select id="course" required>
+                                        <option value="Montessori Diploma Program" ${application.course === 'Montessori Diploma Program' ? 'selected' : ''}>Montessori Diploma Program</option>
+                                    </select>
+                                </div>
+                                
+                                <h3>Education Qualification</h3>
+                                <div id="educationEntries">
+                                    ${application.education.map((edu, index) => `
+                                        <div class="education-entry" data-index="${index}">
+                                            <div class="form-group">
+                                                <label>School/College Name</label>
+                                                <input type="text" name="schoolName" value="${edu.schoolName}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Subject Studied</label>
+                                                <input type="text" name="subject" value="${edu.subject}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Class Obtained</label>
+                                                <input type="text" name="classObtained" value="${edu.classObtained}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Years of Study</label>
+                                                <input type="text" name="yearsOfStudy" value="${edu.yearsOfStudy}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Year of Passing</label>
+                                                <input type="text" name="yearOfPassing" value="${edu.yearOfPassing}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Name of Examination</label>
+                                                <input type="text" name="examinationName" value="${edu.examinationName}" required>
+                                            </div>
+                                            <button type="button" class="btn remove-education" onclick="removeEducationEntry(this)">Remove Entry</button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                
+                                <button type="button" class="btn add-education" onclick="addEducationEntry()">Add Education Entry</button>
+                                
+                                <div style="text-align: center; margin-top: 30px;">
+                                    <button type="submit" class="btn">Update Application</button>
+                                    <button type="button" class="btn" onclick="window.close()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <script>
+                            function addEducationEntry() {
+                                const container = document.getElementById('educationEntries');
+                                const index = container.children.length;
+                                const entry = document.createElement('div');
+                                entry.className = 'education-entry';
+                                entry.setAttribute('data-index', index);
+                                entry.innerHTML = \`
+                                    <div class="form-group">
+                                        <label>School/College Name</label>
+                                        <input type="text" name="schoolName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Subject Studied</label>
+                                        <input type="text" name="subject" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Class Obtained</label>
+                                        <input type="text" name="classObtained" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Years of Study</label>
+                                        <input type="text" name="yearsOfStudy" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Year of Passing</label>
+                                        <input type="text" name="yearOfPassing" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Name of Examination</label>
+                                        <input type="text" name="examinationName" required>
+                                    </div>
+                                    <button type="button" class="btn remove-education" onclick="removeEducationEntry(this)">Remove Entry</button>
+                                \`;
+                                container.appendChild(entry);
+                            }
+                            
+                            function removeEducationEntry(button) {
+                                button.parentElement.remove();
+                            }
+                            
+                            document.getElementById('editApplicationForm').addEventListener('submit', function(e) {
+                                e.preventDefault();
+                                
+                                const educationEntries = [];
+                                document.querySelectorAll('.education-entry').forEach(entry => {
+                                    const education = {
+                                        schoolName: entry.querySelector('[name="schoolName"]').value,
+                                        subject: entry.querySelector('[name="subject"]').value,
+                                        classObtained: entry.querySelector('[name="classObtained"]').value,
+                                        yearsOfStudy: entry.querySelector('[name="yearsOfStudy"]').value,
+                                        yearOfPassing: entry.querySelector('[name="yearOfPassing"]').value,
+                                        examinationName: entry.querySelector('[name="examinationName"]').value
+                                    };
+                                    educationEntries.push(education);
+                                });
+                                
+                                const updatedApplication = {
+                                    applicationNumber: '${application.applicationNumber}',
+                                    fullName: document.getElementById('fullName').value,
+                                    email: document.getElementById('email').value,
+                                    phone: document.getElementById('phone').value,
+                                    dateOfBirth: document.getElementById('dateOfBirth').value,
+                                    sex: document.getElementById('sex').value,
+                                    motherTongue: document.getElementById('motherTongue').value,
+                                    maritalStatus: document.getElementById('maritalStatus').value,
+                                    community: document.getElementById('community').value,
+                                    fatherHusbandName: document.getElementById('fatherHusbandName').value,
+                                    localAddress: document.getElementById('localAddress').value,
+                                    permanentAddress: document.getElementById('permanentAddress').value,
+                                    placeOfBirth: document.getElementById('placeOfBirth').value,
+                                    course: document.getElementById('course').value,
+                                    education: educationEntries,
+                                    status: 'pending',
+                                    submittedDate: new Date().toISOString(),
+                                    centerId: '${application.centerId || ''}'
+                                };
+                                
+                                // Update application in localStorage
+                                const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+                                const index = allApplications.findIndex(app => app.applicationNumber === '${application.applicationNumber}');
+                                if (index !== -1) {
+                                    allApplications[index] = updatedApplication;
+                                    localStorage.setItem('imtti_applications', JSON.stringify(allApplications));
+                                    alert('Application updated successfully!');
+                                    window.close();
+                                    // Refresh parent window
+                                    if (window.opener) {
+                                        window.opener.location.reload();
+                                    }
+                                } else {
+                                    alert('Error updating application!');
+                                }
+                            });
+                        </script>
+                    </body>
+                    </html>
+                `);
+            }
+        }
+        
+        function openApplicationForm() {
+            // Open the application form in a new window
+            window.open('application-form.html', '_blank', 'width=1000,height=800');
+        }
+        
+        function generateCenterReport(type) {
+            const centerStudents = students.filter(s => s.centerId === currentCenter.id);
+            let reportData = '';
+            let filename = '';
+            
+            switch(type) {
+                case 'students':
+                    reportData = centerStudents.map(s => 
+                        `${s.name},${s.registrationNumber},${s.email},${s.phone},${s.course},${s.status},${new Date(s.registeredDate).toLocaleDateString()}`
+                    ).join('\n');
+                    filename = `${currentCenter.name}-students-report.csv`;
+                    break;
+                case 'courses':
+                    const courseStats = {};
+                    centerStudents.forEach(s => {
+                        courseStats[s.course] = (courseStats[s.course] || 0) + 1;
+                    });
+                    reportData = Object.entries(courseStats).map(([course, count]) => 
+                        `${course},${count}`
+                    ).join('\n');
+                    filename = `${currentCenter.name}-courses-report.csv`;
+                    break;
+                case 'monthly':
+                    const monthlyStats = {};
+                    centerStudents.forEach(s => {
+                        const month = new Date(s.registeredDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+                        monthlyStats[month] = (monthlyStats[month] || 0) + 1;
+                    });
+                    reportData = Object.entries(monthlyStats).map(([month, count]) => 
+                        `${month},${count}`
+                    ).join('\n');
+                    filename = `${currentCenter.name}-monthly-report.csv`;
+                    break;
+            }
+            
+            const blob = new Blob([reportData], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                console.log('Center dashboard initializing...');
+                loadData();
+                console.log('Loaded centers:', centers);
+                console.log('Loaded students:', students);
+                
+                // Get center info from URL parameters or localStorage
+                const urlParams = new URLSearchParams(window.location.search);
+                const centerEmail = urlParams.get('email') || localStorage.getItem('currentCenterEmail');
+                console.log('Center email:', centerEmail);
+                
+                if (centerEmail) {
+                    currentCenter = centers.find(c => c.email === centerEmail);
+                    console.log('Found center:', currentCenter);
+                    
+                    if (currentCenter) {
+                        // Check if center is suspended
+                        if (currentCenter.status === 'suspended') {
+                            alert('This center account has been suspended. Please contact the administrator.');
+                            window.location.href = 'index.html';
+                            return;
+                        }
+                        
+                        document.getElementById('centerInfo').innerHTML = `
+                            <strong>${currentCenter.name}</strong> | ${currentCenter.location} | ${currentCenter.email}
+                        `;
+                        loadCenterOverview();
+                        console.log('Center dashboard loaded successfully');
+                    } else {
+                        console.error('Center not found in centers array');
+                        console.log('Available centers:', centers.map(c => ({ email: c.email, name: c.name })));
+                        alert(`Center not found. Available centers: ${centers.map(c => c.email).join(', ') || 'None'}. Redirecting to login.`);
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    console.error('No center email found');
+                    alert('No center information found. Redirecting to login.');
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Error initializing center dashboard:', error);
+                alert('Error loading dashboard. Please try again.');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

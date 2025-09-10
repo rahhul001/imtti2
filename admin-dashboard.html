@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - IMTTI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard-container {
+            min-height: 100vh;
+            background: #1a1a1a;
+        }
+        .dashboard-header {
+            background: #2d2d2d;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #ffd700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dashboard-title {
+            color: #ffd700;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .logout-btn {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover {
+            background: #ffed4e;
+            transform: translateY(-2px);
+        }
+        .dashboard-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .dashboard-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #444;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #e5e5e5;
+            padding: 15px 30px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .tab-btn.active {
+            color: #ffd700;
+            border-bottom-color: #ffd700;
+        }
+        .tab-btn:hover {
+            color: #ffd700;
+        }
+        .admin-tab {
+            display: none;
+        }
+        .admin-tab.active {
+            display: block;
+        }
+        .form-section {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid #ffd700;
+        }
+        .form-section h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        .btn-primary {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            background: #ffed4e;
+            transform: translateY(-2px);
+        }
+        .list-section {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+        .list-section h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .list-item {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border: 1px solid #444;
+            color: white;
+        }
+        .list-item h4 {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .list-item p {
+            color: #e5e5e5;
+            margin: 0.5rem 0;
+        }
+        .print-btn {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .print-btn:hover {
+            background: #ffed4e;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #2d2d2d;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #ffd700;
+        }
+        .stat-card h3 {
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card p {
+            color: #e5e5e5;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fas fa-user-shield"></i> Admin Dashboard - IMTTI
+                <div style="font-size: 0.8rem; color: #b0b0b0; margin-top: 5px;">
+                    Contact: wonderkidz.kgf@gmail.com | +91 9611630879
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchAdminTab('overview')">Overview</button>
+                <button class="tab-btn" onclick="switchAdminTab('centers')">Manage Centers</button>
+                <button class="tab-btn" onclick="switchAdminTab('applications')">Student Applications</button>
+                <button class="tab-btn" onclick="switchAdminTab('reports')">Reports</button>
+            </div>
+            
+            <!-- Overview Tab -->
+            <div id="overviewTab" class="admin-tab active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalCenters">0</h3>
+                        <p>Total Centers</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalStudents">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalApplications">0</h3>
+                        <p>Total Applications</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="recentRegistrations">0</h3>
+                        <p>Recent Registrations</p>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Quick Actions</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="switchAdminTab('centers')">
+                            <i class="fas fa-plus"></i> Add New Center
+                        </button>
+                        <button class="btn-primary" onclick="switchAdminTab('applications')">
+                            <i class="fas fa-list"></i> View All Applications
+                        </button>
+                        <button class="btn-primary" onclick="exportData()">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                        <button class="btn-primary" onclick="testCreateCenter()" style="background: #3b82f6;">
+                            <i class="fas fa-database"></i> Test Database
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Centers Management Tab -->
+            <div id="centersTab" class="admin-tab">
+                <div class="form-section">
+                    <h3>Register New Center</h3>
+                    <form onsubmit="registerCenter(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Center Name</label>
+                                <input type="text" id="centerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Center Email</label>
+                                <input type="email" id="newCenterEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="newCenterPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="centerLocation" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Person</label>
+                                <input type="text" id="contactPerson" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="centerPhone" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Register Center</button>
+                    </form>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Registered Centers</h3>
+                    <div id="centersList">
+                        <!-- Centers will be displayed here -->
+                    </div>
+                </div>
+                
+                <!-- Center Details Modal -->
+                <div id="centerDetailsModal" class="modal" style="display: none;">
+                    <div class="modal-content" style="max-width: 1000px; max-height: 80vh; overflow-y: auto;">
+                        <span class="close" onclick="closeCenterDetailsModal()">&times;</span>
+                        <h2 id="centerDetailsTitle">Center Details</h2>
+                        <div class="dashboard-tabs">
+                            <button class="tab-btn active" onclick="switchCenterDetailsTab('info')">Center Info</button>
+                            <button class="tab-btn" onclick="switchCenterDetailsTab('students')">Registered Students</button>
+                            <button class="tab-btn" onclick="switchCenterDetailsTab('applications')">Applications Received</button>
+                        </div>
+                        
+                        <!-- Center Info Tab -->
+                        <div id="centerInfoTab" class="admin-tab active">
+                            <div id="centerInfoContent">
+                                <!-- Center information will be displayed here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Students Tab -->
+                        <div id="centerStudentsTab" class="admin-tab">
+                            <h3>Students Registered by this Center</h3>
+                            <div id="centerStudentsContent">
+                                <!-- Students will be displayed here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Applications Tab -->
+                        <div id="centerApplicationsTab" class="admin-tab">
+                            <h3>Applications Received by this Center</h3>
+                            <div id="centerApplicationsContent">
+                                <!-- Applications will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Applications Management Tab -->
+            <div id="applicationsTab" class="admin-tab">
+                <div class="list-section">
+                    <h3>All Student Applications</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <select id="applicationStatusFilter" onchange="filterApplicationsByStatus()">
+                            <option value="">All Applications</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="returned">Returned for Edit</option>
+                        </select>
+                    </div>
+                    <div id="applicationsList">
+                        <!-- Applications will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Tab -->
+            <div id="reportsTab" class="admin-tab">
+                <div class="form-section">
+                    <h3>Generate Reports</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="generateReport('centers')">
+                            <i class="fas fa-chart-bar"></i> Centers Report
+                        </button>
+                        <button class="btn-primary" onclick="generateReport('students')">
+                            <i class="fas fa-chart-line"></i> Students Report
+                        </button>
+                        <button class="btn-primary" onclick="generateReport('courses')">
+                            <i class="fas fa-graduation-cap"></i> Courses Report
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="list-section">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivity">
+                        <!-- Recent activity will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Admin Dashboard specific functions
+        function switchAdminTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Show corresponding tab
+            document.getElementById(tab + 'Tab').classList.add('active');
+            
+            // Load data for the tab
+            if (tab === 'centers') {
+                loadCenters();
+            } else if (tab === 'applications') {
+                loadApplications();
+            } else if (tab === 'overview') {
+                loadOverview();
+            } else if (tab === 'reports') {
+                loadRecentActivity();
+            }
+        }
+        
+        function loadOverview() {
+            document.getElementById('totalCenters').textContent = centers.length;
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('totalApplications').textContent = students.length;
+            
+            // Count recent registrations (last 7 days)
+            const recentDate = new Date();
+            recentDate.setDate(recentDate.getDate() - 7);
+            const recentCount = students.filter(s => new Date(s.registeredDate) > recentDate).length;
+            document.getElementById('recentRegistrations').textContent = recentCount;
+        }
+        
+        function loadRecentActivity() {
+            const activityList = document.getElementById('recentActivity');
+            activityList.innerHTML = '';
+            
+            // Combine centers and students, sort by date
+            const allActivity = [
+                ...centers.map(c => ({ ...c, type: 'center' })),
+                ...students.map(s => ({ ...s, type: 'student' }))
+            ].sort((a, b) => new Date(b.registeredDate) - new Date(a.registeredDate));
+            
+            allActivity.slice(0, 10).forEach(item => {
+                const activityDiv = document.createElement('div');
+                activityDiv.className = 'list-item';
+                activityDiv.innerHTML = `
+                    <h4>${item.type === 'center' ? 'New Center Registered' : 'New Student Registered'}</h4>
+                    <p><strong>Name:</strong> ${item.name}</p>
+                    <p><strong>Date:</strong> ${new Date(item.registeredDate).toLocaleString()}</p>
+                    ${item.type === 'student' ? `<p><strong>Registration Number:</strong> ${item.registrationNumber}</p>` : ''}
+                `;
+                activityList.appendChild(activityDiv);
+            });
+        }
+        
+        function exportData() {
+            const data = {
+                centers: centers,
+                students: students,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `imtti-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function generateReport(type) {
+            let reportData = '';
+            let filename = '';
+            
+            switch(type) {
+                case 'centers':
+                    reportData = centers.map(c => 
+                        `${c.name},${c.email},${c.location},${c.contactPerson || 'N/A'},${c.phone || 'N/A'},${new Date(c.registeredDate).toLocaleDateString()}`
+                    ).join('\n');
+                    filename = 'centers-report.csv';
+                    break;
+                case 'students':
+                    reportData = students.map(s => {
+                        const center = centers.find(c => c.id === s.centerId);
+                        return `${s.name},${s.registrationNumber},${s.email},${s.course},${center ? center.name : 'Unknown'},${new Date(s.registeredDate).toLocaleDateString()}`;
+                    }).join('\n');
+                    filename = 'students-report.csv';
+                    break;
+                case 'courses':
+                    const courseStats = {};
+                    students.forEach(s => {
+                        courseStats[s.course] = (courseStats[s.course] || 0) + 1;
+                    });
+                    reportData = Object.entries(courseStats).map(([course, count]) => 
+                        `${course},${count}`
+                    ).join('\n');
+                    filename = 'courses-report.csv';
+                    break;
+            }
+            
+            const blob = new Blob([reportData], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function loadApplications() {
+            const applicationsList = document.getElementById('applicationsList');
+            applicationsList.innerHTML = '';
+            
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            
+            if (allApplications.length === 0) {
+                applicationsList.innerHTML = '<p style="color: #e5e5e5;">No applications found.</p>';
+                return;
+            }
+            
+            allApplications.forEach(application => {
+                const applicationDiv = document.createElement('div');
+                applicationDiv.className = 'list-item';
+                applicationDiv.innerHTML = `
+                    <h4>${application.fullName}</h4>
+                    <p><strong>Application Number:</strong> ${application.applicationNumber}</p>
+                    <p><strong>Email:</strong> ${application.email}</p>
+                    <p><strong>Phone:</strong> ${application.phone}</p>
+                    <p><strong>Course:</strong> ${application.course}</p>
+                    <p><strong>Date of Birth:</strong> ${application.dateOfBirth}</p>
+                    <p><strong>Age:</strong> ${application.age}</p>
+                    <p><strong>Status:</strong> <span style="color: ${getStatusColor(application.status)}">${application.status.toUpperCase()}</span></p>
+                    <p><strong>Submitted:</strong> ${new Date(application.submittedDate).toLocaleDateString()}</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="print-btn" onclick="viewApplication('${application.applicationNumber}')">View Details</button>
+                        <button class="print-btn" onclick="approveApplication('${application.applicationNumber}')" style="background: #10b981;">Approve</button>
+                        <button class="print-btn" onclick="rejectApplication('${application.applicationNumber}')" style="background: #ef4444;">Reject</button>
+                        <button class="print-btn" onclick="returnApplication('${application.applicationNumber}')" style="background: #f59e0b;">Return for Edit</button>
+                    </div>
+                `;
+                applicationsList.appendChild(applicationDiv);
+            });
+        }
+        
+        function getStatusColor(status) {
+            switch(status) {
+                case 'pending': return '#f59e0b';
+                case 'approved': return '#10b981';
+                case 'rejected': return '#ef4444';
+                case 'returned': return '#3b82f6';
+                default: return '#e5e5e5';
+            }
+        }
+        
+        function viewApplication(applicationNumber) {
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const application = allApplications.find(app => app.applicationNumber === applicationNumber);
+            
+            if (application) {
+                // Open application details in new window
+                const detailsWindow = window.open('', '_blank', 'width=800,height=600');
+                detailsWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Application Details - ${application.applicationNumber}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+                            .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                            .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #ffd700; padding-bottom: 20px; }
+                            .section { margin-bottom: 20px; }
+                            .section h3 { color: #ffd700; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+                            .field { margin-bottom: 10px; }
+                            .field label { font-weight: bold; }
+                            .education-entry { background: #f9f9f9; padding: 10px; margin: 5px 0; border-radius: 5px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <h1>IMTTI - Application Details</h1>
+                                <h2>Application Number: ${application.applicationNumber}</h2>
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Personal Information</h3>
+                                <div class="field"><label>Full Name:</label> ${application.fullName}</div>
+                                <div class="field"><label>Email:</label> ${application.email}</div>
+                                <div class="field"><label>Phone:</label> ${application.phone}</div>
+                                <div class="field"><label>Date of Birth:</label> ${application.dateOfBirth}</div>
+                                <div class="field"><label>Age:</label> ${application.age}</div>
+                                <div class="field"><label>Sex:</label> ${application.sex}</div>
+                                <div class="field"><label>Mother Tongue:</label> ${application.motherTongue}</div>
+                                <div class="field"><label>Marital Status:</label> ${application.maritalStatus}</div>
+                                <div class="field"><label>Community:</label> ${application.community}</div>
+                                <div class="field"><label>Father/Husband Name:</label> ${application.fatherHusbandName}</div>
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Address Information</h3>
+                                <div class="field"><label>Local Address:</label> ${application.localAddress}</div>
+                                <div class="field"><label>Permanent Address:</label> ${application.permanentAddress}</div>
+                                <div class="field"><label>Place of Birth:</label> ${application.placeOfBirth}</div>
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Education Qualification</h3>
+                                ${application.education.map(edu => `
+                                    <div class="education-entry">
+                                        <div class="field"><label>School/College:</label> ${edu.schoolName}</div>
+                                        <div class="field"><label>Subject:</label> ${edu.subject}</div>
+                                        <div class="field"><label>Class Obtained:</label> ${edu.classObtained}</div>
+                                        <div class="field"><label>Years of Study:</label> ${edu.yearsOfStudy}</div>
+                                        <div class="field"><label>Year of Passing:</label> ${edu.yearOfPassing}</div>
+                                        <div class="field"><label>Examination:</label> ${edu.examinationName}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Course Information</h3>
+                                <div class="field"><label>Course Applied For:</label> ${application.course}</div>
+                                <div class="field"><label>Status:</label> ${application.status}</div>
+                                <div class="field"><label>Submitted Date:</label> ${new Date(application.submittedDate).toLocaleString()}</div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `);
+            }
+        }
+        
+        function approveApplication(applicationNumber) {
+            if (confirm('Are you sure you want to approve this application?')) {
+                updateApplicationStatus(applicationNumber, 'approved');
+            }
+        }
+        
+        function rejectApplication(applicationNumber) {
+            if (confirm('Are you sure you want to reject this application?')) {
+                updateApplicationStatus(applicationNumber, 'rejected');
+            }
+        }
+        
+        function returnApplication(applicationNumber) {
+            if (confirm('Are you sure you want to return this application for editing?')) {
+                updateApplicationStatus(applicationNumber, 'returned');
+            }
+        }
+        
+        function updateApplicationStatus(applicationNumber, status) {
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const application = allApplications.find(app => app.applicationNumber === applicationNumber);
+            
+            if (application) {
+                application.status = status;
+                application.statusUpdatedDate = new Date().toISOString();
+                localStorage.setItem('imtti_applications', JSON.stringify(allApplications));
+                loadApplications();
+                alert(`Application ${applicationNumber} has been ${status}!`);
+            }
+        }
+        
+        function filterApplicationsByStatus() {
+            const status = document.getElementById('applicationStatusFilter').value;
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const applicationsList = document.getElementById('applicationsList');
+            
+            applicationsList.innerHTML = '';
+            
+            const filteredApplications = status ? allApplications.filter(app => app.status === status) : allApplications;
+            
+            if (filteredApplications.length === 0) {
+                applicationsList.innerHTML = '<p style="color: #e5e5e5;">No applications found.</p>';
+                return;
+            }
+            
+            filteredApplications.forEach(application => {
+                const applicationDiv = document.createElement('div');
+                applicationDiv.className = 'list-item';
+                applicationDiv.innerHTML = `
+                    <h4>${application.fullName}</h4>
+                    <p><strong>Application Number:</strong> ${application.applicationNumber}</p>
+                    <p><strong>Email:</strong> ${application.email}</p>
+                    <p><strong>Phone:</strong> ${application.phone}</p>
+                    <p><strong>Course:</strong> ${application.course}</p>
+                    <p><strong>Date of Birth:</strong> ${application.dateOfBirth}</p>
+                    <p><strong>Age:</strong> ${application.age}</p>
+                    <p><strong>Status:</strong> <span style="color: ${getStatusColor(application.status)}">${application.status.toUpperCase()}</span></p>
+                    <p><strong>Submitted:</strong> ${new Date(application.submittedDate).toLocaleDateString()}</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="print-btn" onclick="viewApplication('${application.applicationNumber}')">View Details</button>
+                        <button class="print-btn" onclick="approveApplication('${application.applicationNumber}')" style="background: #10b981;">Approve</button>
+                        <button class="print-btn" onclick="rejectApplication('${application.applicationNumber}')" style="background: #ef4444;">Reject</button>
+                        <button class="print-btn" onclick="returnApplication('${application.applicationNumber}')" style="background: #f59e0b;">Return for Edit</button>
+                    </div>
+                `;
+                applicationsList.appendChild(applicationDiv);
+            });
+        }
+        
+        function loadCenters() {
+            const centersList = document.getElementById('centersList');
+            centersList.innerHTML = '';
+            
+            if (centers.length === 0) {
+                centersList.innerHTML = '<p style="color: #e5e5e5;">No centers registered yet.</p>';
+                return;
+            }
+            
+            centers.forEach(center => {
+                // Count students and applications for this center
+                const centerStudents = students.filter(s => s.centerId === center.id);
+                const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+                const centerApplications = allApplications.filter(app => 
+                    centerStudents.some(s => s.email === app.email)
+                );
+                
+                const centerDiv = document.createElement('div');
+                centerDiv.className = 'list-item';
+                const statusColor = center.status === 'active' ? '#10b981' : '#ef4444';
+                const statusText = center.status === 'active' ? 'ACTIVE' : 'SUSPENDED';
+                centerDiv.innerHTML = `
+                    <h4>${center.name} <span style="color: ${statusColor}; font-size: 0.8em; margin-left: 10px;">[${statusText}]</span></h4>
+                    <p><strong>Email:</strong> ${center.email}</p>
+                    <p><strong>Location:</strong> ${center.location}</p>
+                    <p><strong>Contact Person:</strong> ${center.contactPerson || 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${center.phone || 'N/A'}</p>
+                    <p><strong>Registered:</strong> ${new Date(center.registeredDate).toLocaleDateString()}</p>
+                    <p><strong>Students Registered:</strong> ${centerStudents.length}</p>
+                    <p><strong>Applications Received:</strong> ${centerApplications.length}</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="print-btn" onclick="viewCenterDetails('${center.id}')" style="background: #3b82f6;">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="print-btn" onclick="exportCenterData('${center.id}')" style="background: #10b981;">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                        ${center.status === 'active' ? 
+                            `<button class="print-btn" onclick="suspendCenter('${center.id}')" style="background: #f59e0b;">
+                                <i class="fas fa-ban"></i> Suspend Center
+                            </button>` : 
+                            `<button class="print-btn" onclick="unsuspendCenter('${center.id}')" style="background: #10b981;">
+                                <i class="fas fa-check"></i> Unsuspend Center
+                            </button>`
+                        }
+                    </div>
+                `;
+                centersList.appendChild(centerDiv);
+            });
+        }
+        
+        function viewCenterDetails(centerId) {
+            const center = centers.find(c => c.id === centerId);
+            if (!center) return;
+            
+            document.getElementById('centerDetailsTitle').textContent = `Center Details - ${center.name}`;
+            document.getElementById('centerDetailsModal').style.display = 'block';
+            
+            // Load center info
+            loadCenterInfo(center);
+            loadCenterStudents(centerId);
+            loadCenterApplications(centerId);
+        }
+        
+        function closeCenterDetailsModal() {
+            document.getElementById('centerDetailsModal').style.display = 'none';
+        }
+        
+        function switchCenterDetailsTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('#centerDetailsModal .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#centerDetailsModal .admin-tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Show corresponding tab
+            document.getElementById('center' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab').classList.add('active');
+        }
+        
+        function loadCenterInfo(center) {
+            const centerInfoContent = document.getElementById('centerInfoContent');
+            const statusColor = center.status === 'active' ? '#10b981' : '#ef4444';
+            const statusText = center.status === 'active' ? 'ACTIVE' : 'SUSPENDED';
+            centerInfoContent.innerHTML = `
+                <div class="list-item">
+                    <h3>Center Information</h3>
+                    <p><strong>Center Name:</strong> ${center.name}</p>
+                    <p><strong>Email:</strong> ${center.email}</p>
+                    <p><strong>Location:</strong> ${center.location}</p>
+                    <p><strong>Contact Person:</strong> ${center.contactPerson || 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${center.phone || 'N/A'}</p>
+                    <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span></p>
+                    <p><strong>Registration Date:</strong> ${new Date(center.registeredDate).toLocaleDateString()}</p>
+                    <div style="margin-top: 1rem;">
+                        ${center.status === 'active' ? 
+                            `<button class="print-btn" onclick="suspendCenter('${center.id}')" style="background: #f59e0b;">
+                                <i class="fas fa-ban"></i> Suspend Center
+                            </button>` : 
+                            `<button class="print-btn" onclick="unsuspendCenter('${center.id}')" style="background: #10b981;">
+                                <i class="fas fa-check"></i> Unsuspend Center
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `;
+        }
+        
+        function loadCenterStudents(centerId) {
+            const centerStudentsContent = document.getElementById('centerStudentsContent');
+            const centerStudents = students.filter(s => s.centerId === centerId);
+            
+            centerStudentsContent.innerHTML = '';
+            
+            if (centerStudents.length === 0) {
+                centerStudentsContent.innerHTML = '<p style="color: #e5e5e5;">No students registered by this center.</p>';
+                return;
+            }
+            
+            centerStudents.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'list-item';
+                studentDiv.innerHTML = `
+                    <h4>${student.name}</h4>
+                    <p><strong>Registration Number:</strong> ${student.registrationNumber}</p>
+                    <p><strong>Email:</strong> ${student.email}</p>
+                    <p><strong>Phone:</strong> ${student.phone}</p>
+                    <p><strong>Course:</strong> ${student.course}</p>
+                    <p><strong>Date of Birth:</strong> ${student.dateOfBirth}</p>
+                    <p><strong>Status:</strong> ${student.status}</p>
+                    <p><strong>Registered:</strong> ${new Date(student.registeredDate).toLocaleDateString()}</p>
+                `;
+                centerStudentsContent.appendChild(studentDiv);
+            });
+        }
+        
+        function loadCenterApplications(centerId) {
+            const centerApplicationsContent = document.getElementById('centerApplicationsContent');
+            const centerStudents = students.filter(s => s.centerId === centerId);
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            
+            // Get applications that belong to this center's students OR have centerId field
+            const centerApplications = allApplications.filter(app => 
+                centerStudents.some(s => s.email === app.email) || 
+                (app.centerId && app.centerId === centerId)
+            );
+            
+            centerApplicationsContent.innerHTML = '';
+            
+            if (centerApplications.length === 0) {
+                centerApplicationsContent.innerHTML = '<p style="color: #e5e5e5;">No applications received by this center.</p>';
+                return;
+            }
+            
+            centerApplications.forEach(application => {
+                const applicationDiv = document.createElement('div');
+                applicationDiv.className = 'list-item';
+                applicationDiv.innerHTML = `
+                    <h4>${application.fullName}</h4>
+                    <p><strong>Application Number:</strong> ${application.applicationNumber}</p>
+                    <p><strong>Email:</strong> ${application.email}</p>
+                    <p><strong>Phone:</strong> ${application.phone}</p>
+                    <p><strong>Course:</strong> ${application.course}</p>
+                    <p><strong>Date of Birth:</strong> ${application.dateOfBirth}</p>
+                    <p><strong>Age:</strong> ${application.age}</p>
+                    <p><strong>Status:</strong> <span style="color: ${getStatusColor(application.status)}">${application.status.toUpperCase()}</span></p>
+                    <p><strong>Submitted:</strong> ${new Date(application.submittedDate).toLocaleDateString()}</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="print-btn" onclick="viewApplication('${application.applicationNumber}')">View Details</button>
+                        <button class="print-btn" onclick="printApplicationForm('${application.applicationNumber}')">Print Application</button>
+                        ${application.photo ? `<button class="print-btn" onclick="downloadPhoto('${application.applicationNumber}')" style="background: #10b981;">Download Photo</button>` : ''}
+                    </div>
+                `;
+                centerApplicationsContent.appendChild(applicationDiv);
+            });
+        }
+        
+        function exportCenterData(centerId) {
+            const center = centers.find(c => c.id === centerId);
+            const centerStudents = students.filter(s => s.centerId === centerId);
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const centerApplications = allApplications.filter(app => 
+                centerStudents.some(s => s.email === app.email)
+            );
+            
+            const data = {
+                center: center,
+                students: centerStudents,
+                applications: centerApplications,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${center.name}-complete-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function printApplicationForm(applicationNumber) {
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const application = allApplications.find(app => app.applicationNumber === applicationNumber);
+            
+            if (application) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>IMTTI Application - ${application.applicationNumber}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .header { text-align: center; margin-bottom: 30px; }
+                            .header h1 { color: #ffd700; }
+                            .section { margin-bottom: 20px; }
+                            .section h3 { color: #1a1a1a; border-bottom: 2px solid #ffd700; padding-bottom: 5px; }
+                            .field { margin-bottom: 10px; }
+                            .field label { font-weight: bold; }
+                            .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>IMTTI - International Montessori Teachers Training Institute</h1>
+                            <h2>Student Application Form</h2>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Application Details</h3>
+                            <div class="field">
+                                <label>Application Number:</label> ${application.applicationNumber}
+                            </div>
+                            <div class="field">
+                                <label>Submitted Date:</label> ${new Date(application.submittedDate).toLocaleDateString()}
+                            </div>
+                            <div class="field">
+                                <label>Status:</label> ${application.status}
+                            </div>
+                        </div>
+                        
+                        <div class="section" style="display: flex; gap: 20px;">
+                            <div style="flex: 1;">
+                                <h3>Personal Information</h3>
+                                <div class="field">
+                                    <label>Full Name:</label> ${application.fullName}
+                                </div>
+                                <div class="field">
+                                    <label>Email:</label> ${application.email}
+                                </div>
+                                <div class="field">
+                                    <label>Phone:</label> ${application.phone}
+                                </div>
+                                <div class="field">
+                                    <label>Date of Birth:</label> ${application.dateOfBirth}
+                                </div>
+                                <div class="field">
+                                    <label>Age:</label> ${application.age}
+                                </div>
+                                <div class="field">
+                                    <label>Sex:</label> ${application.sex}
+                                </div>
+                                <div class="field">
+                                    <label>Mother Tongue:</label> ${application.motherTongue}
+                                </div>
+                                <div class="field">
+                                    <label>Marital Status:</label> ${application.maritalStatus}
+                                </div>
+                                <div class="field">
+                                    <label>Community:</label> ${application.community}
+                                </div>
+                                <div class="field">
+                                    <label>Father/Husband Name:</label> ${application.fatherHusbandName}
+                                </div>
+                            </div>
+                            <div style="flex: 0 0 120px; text-align: center;">
+                                <h3>Photo</h3>
+                                <div style="width: 100px; height: 120px; border: 2px solid #ffd700; border-radius: 5px; margin: 0 auto; background: #f9f9f9; display: flex; align-items: center; justify-content: center; color: #666;">
+                                    ${application.photo ? `<img src="${application.photo}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 3px;">` : 'No Photo'}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Address Information</h3>
+                            <div class="field">
+                                <label>Local Address:</label> ${application.localAddress}
+                            </div>
+                            <div class="field">
+                                <label>Permanent Address:</label> ${application.permanentAddress}
+                            </div>
+                            <div class="field">
+                                <label>Place of Birth:</label> ${application.placeOfBirth}
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Education Qualification</h3>
+                            ${application.education.map(edu => `
+                                <div style="background: #f9f9f9; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                                    <div class="field"><label>School/College:</label> ${edu.schoolName}</div>
+                                    <div class="field"><label>Subject:</label> ${edu.subject}</div>
+                                    <div class="field"><label>Class Obtained:</label> ${edu.classObtained}</div>
+                                    <div class="field"><label>Years of Study:</label> ${edu.yearsOfStudy}</div>
+                                    <div class="field"><label>Year of Passing:</label> ${edu.yearOfPassing}</div>
+                                    <div class="field"><label>Examination:</label> ${edu.examinationName}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Course Information</h3>
+                            <div class="field">
+                                <label>Course Applied For:</label> ${application.course}
+                            </div>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>This application was generated on ${new Date().toLocaleString()}</p>
+                            <p>IMTTI - International Montessori Teachers Training Institute</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+        
+        function downloadPhoto(applicationNumber) {
+            const allApplications = JSON.parse(localStorage.getItem('imtti_applications') || '[]');
+            const application = allApplications.find(app => app.applicationNumber === applicationNumber);
+            
+            if (application && application.photo) {
+                // Create a temporary link to download the photo
+                const link = document.createElement('a');
+                link.href = application.photo;
+                link.download = `${application.fullName}_${application.applicationNumber}_photo.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                alert('No photo available for this application.');
+            }
+        }
+        
+        function suspendCenter(centerId) {
+            if (confirm('Are you sure you want to suspend this center? They will not be able to login until unsuspended.')) {
+                const center = centers.find(c => c.id === centerId);
+                if (center) {
+                    center.status = 'suspended';
+                    saveData();
+                    loadCenters();
+                    alert('Center has been suspended successfully!');
+                }
+            }
+        }
+        
+        function unsuspendCenter(centerId) {
+            if (confirm('Are you sure you want to unsuspend this center? They will be able to login again.')) {
+                const center = centers.find(c => c.id === centerId);
+                if (center) {
+                    center.status = 'active';
+                    saveData();
+                    loadCenters();
+                    alert('Center has been unsuspended successfully!');
+                }
+            }
+        }
+        
+        function saveData() {
+            localStorage.setItem('imtti_centers', JSON.stringify(centers));
+            localStorage.setItem('imtti_students', JSON.stringify(students));
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Test database connection
+        async function testDatabase() {
+            try {
+                console.log('Testing database connection...');
+                const testCenters = await db.getCenters();
+                console.log('Database test successful! Centers found:', testCenters.length);
+                return true;
+            } catch (error) {
+                console.error('Database test failed:', error);
+                return false;
+            }
+        }
+
+        // Test creating a center
+        async function testCreateCenter() {
+            try {
+                console.log('Testing center creation...');
+                
+                const testCenter = {
+                    name: 'Test Center ' + Date.now(),
+                    email: 'test' + Date.now() + '@center.com',
+                    password: 'test123',
+                    location: 'Test City',
+                    contact_person: 'Test Person',
+                    phone: '1234567890'
+                };
+                
+                console.log('Creating center with data:', testCenter);
+                const result = await db.createCenter(testCenter);
+                console.log('Center created successfully:', result);
+                alert('Test center created successfully! Check your database.');
+                
+                // Reload data to show the new center
+                await loadData();
+                loadCenters();
+                
+            } catch (error) {
+                console.error('Error creating test center:', error);
+                alert('Error creating test center: ' + error.message);
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('Admin dashboard initializing...');
+            
+            // Test database connection first
+            const databaseWorking = await testDatabase();
+            if (databaseWorking) {
+                console.log('Using database for data storage');
+                await loadData();
+            } else {
+                console.log('Falling back to localStorage');
+                loadData();
+            }
+            
+            loadOverview();
+        });
+    </script>
+</body>
+</html>
